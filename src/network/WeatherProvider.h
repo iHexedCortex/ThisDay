@@ -27,7 +27,6 @@ class WeatherProvider : public QObject
     Q_PROPERTY(QString sunrise READ getSunrise NOTIFY dataChanged)
     Q_PROPERTY(QString sunset READ getSunset NOTIFY dataChanged)
     Q_PROPERTY(QString city READ getCity NOTIFY dataChanged)
-    Q_PROPERTY(QString iconCode READ getIconCode NOTIFY dataChanged)
     Q_PROPERTY(QVariantList hourlyForecastModel READ getHourlyForecastModel NOTIFY dataChanged)
     Q_PROPERTY(QVariantList dailyForecastModel READ getDailyForecastModel NOTIFY dataChanged)
     Q_PROPERTY(bool isLoading READ getIsLoading NOTIFY loadingChanged)
@@ -52,7 +51,6 @@ public:
     QString getSunrise() const;
     QString getSunset() const;
     QString getCity() const;
-    QString getIconCode() const;
     QVariantList getHourlyForecastModel() const;
     QVariantList getDailyForecastModel() const;
     bool getIsLoading() const;
@@ -87,7 +85,6 @@ private:
     QString sunrise = "Loading...";
     QString sunset = "Loading...";
     QString city = "Detecting...";
-    QString iconCode = "";
     QVariantList hourlyForecastModel;
     QVariantList dailyForecastModel;
     bool isLoading = false;

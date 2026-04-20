@@ -125,10 +125,6 @@ QString WeatherProvider::getCity() const {
     return this->city;
 }
 
-QString WeatherProvider::getIconCode() const {
-    return this->iconCode;
-}
-
 QVariantList WeatherProvider::getHourlyForecastModel() const {
     return this->hourlyForecastModel;
 }
