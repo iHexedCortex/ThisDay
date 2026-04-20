@@ -11,23 +11,10 @@ Rectangle {
         id: mainLayout
         anchors.fill: parent
 
-        Item {
-            id: sidebarToggleRectangle
-            Layout.preferredWidth: searchbar.height * 0.7
+        SidebarToggle {
+            id: sidebarToggle
+            Layout.preferredWidth: searchbar.height
             Layout.preferredHeight: Layout.preferredWidth
-
-            Image {
-                id: sidebarToggleImage
-                anchors.fill: parent
-                source: Directory.toolbarIcons + (window.sidebarExpanded ? "collapse.png" : "expand.png")
-                fillMode: Image.PreserveAspectFit
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                onClicked: window.sidebarExpanded = !window.sidebarExpanded
-            }
         }
 
         Searchbar {
@@ -43,7 +30,7 @@ Rectangle {
 
         ThemeSwitch {
             id: themeSwitch
-            Layout.preferredWidth: searchbar.height
+            Layout.preferredWidth: sidebarToggle.height
             Layout.preferredHeight: Layout.preferredWidth
         }
     }

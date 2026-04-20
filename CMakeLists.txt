@@ -41,8 +41,8 @@ qt_add_qml_module(appThisDay
         resources/icons/max-temperature.png
         resources/icons/min-temperature.png
 
-        resources/icons/toolbar/collapse.png
-        resources/icons/toolbar/expand.png
+        resources/icons/toolbar/collapse.svg
+        resources/icons/toolbar/expand.svg
 
         resources/icons/toolbar/searchbar/favorite.png
         resources/icons/toolbar/searchbar/not-favorite.png
@@ -88,7 +88,7 @@ qt_add_qml_module(appThisDay
         resources/icons/theme/auto-theme.svg
 
         QML_FILES qml/components/Toolbar.qml
-        QML_FILES qml/components/SidebarHamburgerToggle.qml
+        QML_FILES
         QML_FILES qml/components/DetectLocationButton.qml
         QML_FILES qml/components/HourlyForecastItem.qml
         QML_FILES qml/components/HourlyForecastView.qml
@@ -105,6 +105,7 @@ qt_add_qml_module(appThisDay
         QML_FILES qml/shared/Directory.qml
         QML_FILES qml/shared/WeatherData.qml
         QML_FILES qml/shared/Clock.qml
+        QML_FILES qml/components/SidebarToggle.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
