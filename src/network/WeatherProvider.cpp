@@ -1,4 +1,5 @@
 #include "WeatherProvider.h"
+
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QByteArray>
@@ -87,6 +88,10 @@ int WeatherProvider::getHumidity() const {
 
 double WeatherProvider::getWindSpeed() const {
     return this->windSpeed;
+}
+
+QString WeatherProvider::getWindDirection() const {
+    return this->windDirection;
 }
 
 int WeatherProvider::getPressure() const {
@@ -187,6 +192,11 @@ void WeatherProvider::extractWindInformationFromJson(const QJsonObject &json) {
     QJsonObject windObj = json["wind"].toObject();
 
     this->windSpeed = windObj["speed"].toDouble();
+
+    const int degrees = windObj["deg"].toInt();
+    static const QStringList sectors = { "N", "NE", "E", "SE", "S", "SW", "W", "NW" };
+    int sectorIndex = static_cast<int>((degrees + 22.5) / 45.0) % sectors.length();
+    this->windDirection = sectors[sectorIndex];
 }
 
 void WeatherProvider::extractCloudInformationFromJson(const QJsonObject &json) {

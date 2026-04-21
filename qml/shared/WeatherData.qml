@@ -8,6 +8,7 @@ QtObject {
     property int feelsLike: weatherProvider.feelsLike
     property int humidity: weatherProvider.humidity
     property real windSpeed: weatherProvider.windSpeed
+    property string windDirection: weatherProvider.windDirection
     property int pressure: weatherProvider.pressure
     property int cloudiness: weatherProvider.cloudiness
     property real visibility: weatherProvider.visibility

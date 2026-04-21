@@ -11,7 +11,7 @@ Rectangle {
     required property var value
     required property string unit
     required property string icon
-    property string direction
+    property string extra
     property string level
 
     RowLayout {
@@ -91,22 +91,22 @@ Rectangle {
                 }
 
                 Rectangle {
-                    id: directionRectangle
+                    id: extraRectangle
                     Layout.preferredWidth: root.width * 0.2
                     Layout.preferredHeight: Layout.preferredWidth * 0.6
                     color: Theme.primaryColor
                     radius: Layout.preferredHeight * 0.4
-                    visible: !!root.direction
+                    visible: !!root.extra
 
                     Text {
-                        id: directionText
+                        id: extraText
                         anchors.fill: parent
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                        text: root.direction
+                        text: root.extra
                         color: Theme.textColor
                         font.pixelSize: parent.height * 0.7
-                        font.weight: Font.DemiBold
+                        font.bold: true
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
                     }
                 }
             }

@@ -22,7 +22,7 @@ Rectangle {
             label: "Wind"
             value: WeatherData.windSpeed
             unit: "km/h"
-            direction: "NW"
+            extra: WeatherData.windDirection
         }
 
         WeatherDetailsItem {
