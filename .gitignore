@@ -88,3 +88,4 @@ SecretConfig.h
 !SecretConfig.h.example
 
 .vscode/
+.idea/
