@@ -30,6 +30,7 @@ class WeatherProvider : public QObject
     Q_PROPERTY(QVariantList hourlyForecastModel READ getHourlyForecastModel NOTIFY dataChanged)
     Q_PROPERTY(QVariantList dailyForecastModel READ getDailyForecastModel NOTIFY dataChanged)
     Q_PROPERTY(bool isLoading READ getIsLoading NOTIFY loadingChanged)
+    Q_PROPERTY(QString lastFetchedTime READ getLastFetchedTime NOTIFY dataChanged)
 
 public:
     explicit WeatherProvider(QObject *parent = nullptr);
@@ -54,6 +55,7 @@ public:
     QVariantList getHourlyForecastModel() const;
     QVariantList getDailyForecastModel() const;
     bool getIsLoading() const;
+    QString getLastFetchedTime() const;
 
     Q_INVOKABLE void fetchWeather(const QString &city);
     Q_INVOKABLE void updateWeather();
@@ -80,16 +82,18 @@ private:
     double dewPoint = 0.0;
     double precipitation = 0.0;
     QString uvLevel = "Loading...";
-    int uvIndex = 0;
+    int uvIndex = 999;
     QString condition = "Loading...";
-    QString sunrise = "Loading...";
-    QString sunset = "Loading...";
+    QString sunrise = "--:--";
+    QString sunset = "--:--";
     QString city = "Detecting...";
     QVariantList hourlyForecastModel;
     QVariantList dailyForecastModel;
     bool isLoading = false;
+    QString lastFetchedTime = "--:--";
 
     void setIsLoading(bool newState);
+    void updateLastFetchedDateTime();
 
     void extractMainInformationFromJson(const QJsonObject &json);
     void extractSysInformationFromJson(const QJsonObject &json);

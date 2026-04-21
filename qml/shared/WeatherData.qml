@@ -21,7 +21,7 @@ QtObject {
     property string city: weatherProvider.city
     property var hourlyForecastModel: weatherProvider.hourlyForecastModel
     property var dailyForecastModel: weatherProvider.dailyForecastModel
-
+    property string lastUpdatedTime: weatherProvider.lastFetchedTime
     property bool loading: weatherProvider.isLoading
 
     property string clothingAdvice: {

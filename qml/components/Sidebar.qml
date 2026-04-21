@@ -166,7 +166,7 @@ Rectangle {
             Layout.preferredHeight: sunriseStatItem.height
             icon: Directory.sidebarIcons + "reload.png"
             label: "Last updated"
-            value: "Today • 10:45"
+            value: "Today" + " • " + WeatherData.lastUpdatedTime
             rotatableImage: true
             visible: root.expanded
 

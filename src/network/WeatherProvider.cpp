@@ -24,6 +24,8 @@ void WeatherProvider::fetchWeather(const QString &city) {
 
     this->manager->get(QNetworkRequest(weatherUrl));
     this->manager->get(QNetworkRequest(forecastUrl));
+
+    this->updateLastFetchedDateTime();
 }
 
 void WeatherProvider::updateWeather() {
@@ -137,10 +139,20 @@ bool WeatherProvider::getIsLoading() const {
     return this->isLoading;
 }
 
+QString WeatherProvider::getLastFetchedTime() const {
+    return this->lastFetchedTime;
+}
+
 void WeatherProvider::setIsLoading(bool newState) {
     this->isLoading = newState;
 
     emit this->loadingChanged();
+}
+
+void WeatherProvider::updateLastFetchedDateTime() {
+    QTime currentTime = QTime::currentTime();
+
+    this->lastFetchedTime = currentTime.toString("HH:mm");
 }
 
 void WeatherProvider::extractMainInformationFromJson(const QJsonObject &json) {
