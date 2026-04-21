@@ -21,7 +21,7 @@ Rectangle {
             icon:  Directory.weatherDetailsIcons + "wind.png"
             label: "Wind"
             value: WeatherData.windSpeed
-            unit: "km/h"
+            unit: "m/s"
             extra: WeatherData.windDirection
         }
 
