@@ -17,15 +17,15 @@ WeatherProvider::WeatherProvider(QObject *parent) : QObject{parent} {
 void WeatherProvider::fetchWeather(const QString &city) {
     const QString API_KEY = SecretConfig::OPENWEATHER_API_KEY;
 
-    QUrl weatherUrl(QString("https://api.openweathermap.org/data/2.5/weather?q=%1&appid=%2&units=metric")
-                    .arg(city, API_KEY));
-    QUrl forecastUrl(QString("https://api.openweathermap.org/data/2.5/forecast?q=%1&appid=%2&units=metric")
-                    .arg(city, API_KEY));
-
     this->city = city;
     this->setIsLoading(true);
 
+    QUrl weatherUrl(QString("https://api.openweathermap.org/data/2.5/weather?q=%1&appid=%2&units=metric")
+                    .arg(city, API_KEY));
     this->manager->get(QNetworkRequest(weatherUrl));
+
+    QUrl forecastUrl(QString("https://api.openweathermap.org/data/2.5/forecast?q=%1&appid=%2&units=metric")
+                    .arg(city, API_KEY));
     this->manager->get(QNetworkRequest(forecastUrl));
 
     this->updateLastFetchedDateTime();
@@ -50,7 +50,16 @@ void WeatherProvider::onResult(QNetworkReply *reply) {
             this->extractCloudInformationFromJson(json);
             this->extractWindInformationFromJson(json);
             this->extractRainInformationFromJson(json);
+            this->extractCoordinateInformationFromJson(json);
             this->extractOtherInformationFromJson(json);
+
+            const QString API_KEY = SecretConfig::OPENWEATHER_API_KEY;
+            QUrl uvUrl(QString("https://api.openweathermap.org/data/2.5/uvi?lat=%1&lon=%2&appid=%3")
+                           .arg(this->latitude).arg(this->longtitude).arg(API_KEY));
+            this->manager->get(QNetworkRequest(uvUrl));
+        }
+        else if (json.contains("value")) {
+            this->extractUVInformationFromJson(json);
         }
 
         emit dataChanged();
@@ -199,16 +208,30 @@ void WeatherProvider::extractWindInformationFromJson(const QJsonObject &json) {
     this->windDirection = sectors[sectorIndex];
 }
 
+void WeatherProvider::extractCoordinateInformationFromJson(const QJsonObject &json) {
+    QJsonObject coordObj = json["coord"].toObject();
+
+    this->latitude = coordObj["lat"].toDouble();
+    this->longtitude = coordObj["lon"].toDouble();
+}
+
 void WeatherProvider::extractCloudInformationFromJson(const QJsonObject &json) {
     QJsonObject cloudObj = json["clouds"].toObject();
 
     this->cloudiness = cloudObj["all"].toInt();
 }
 
-void WeatherProvider::extractOtherInformationFromJson(const QJsonObject &json) {
-    this->uvIndex = 4;
-    this->uvLevel = (this->uvIndex >= 6.0) ? "High" : (this->uvIndex >= 3.0) ? "Moderate" : "Low";
+void WeatherProvider::extractUVInformationFromJson(const QJsonObject &json) {
+    this->uvIndex = qRound(json["value"].toDouble());
 
+    if (this->uvIndex < 3) this->uvLevel = "Low";
+    else if (this->uvIndex < 6) this->uvLevel = "Moderate";
+    else if (this->uvIndex < 8) this->uvLevel = "High";
+    else if (this->uvIndex < 11) this->uvLevel = "Very High";
+    else this->uvLevel = "Extreme";
+}
+
+void WeatherProvider::extractOtherInformationFromJson(const QJsonObject &json) {
     this->visibility = qRound(json["visibility"].toDouble() / 1000.0);
 
     QJsonArray weatherArray = json["weather"].toArray();

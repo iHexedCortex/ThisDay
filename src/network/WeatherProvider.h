@@ -90,6 +90,8 @@ private:
     QString sunrise = "--:--";
     QString sunset = "--:--";
     QString city = "Detecting...";
+    double latitude = -999;
+    double longtitude = -999;
     QVariantList hourlyForecastModel;
     QVariantList dailyForecastModel;
     bool isLoading = false;
@@ -104,6 +106,8 @@ private:
     void extractOtherInformationFromJson(const QJsonObject &json);
     void extractWindInformationFromJson(const QJsonObject &json);
     void extractCloudInformationFromJson(const QJsonObject &json);
+    void extractCoordinateInformationFromJson(const QJsonObject &json);
+    void extractUVInformationFromJson(const QJsonObject &json);
     void extractHourlyForecastFromJson(const QJsonObject &json);
     void extractDailyForecastFromJson(const QJsonObject &json);
 };
