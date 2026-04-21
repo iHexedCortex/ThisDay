@@ -106,6 +106,9 @@ qt_add_qml_module(appThisDay
         QML_FILES qml/shared/WeatherData.qml
         QML_FILES qml/shared/Clock.qml
         QML_FILES qml/components/SidebarToggle.qml
+        RESOURCES
+        SOURCES src/config/SecretConfig.h
+        SOURCES src/config/SecretConfig.h.example
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

@@ -5,6 +5,8 @@
 #include <QNetworkRequest>
 #include <QJsonArray>
 
+#include "../config/SecretConfig.h"
+
 WeatherProvider::WeatherProvider(QObject *parent) : QObject{parent} {
     this->manager = new QNetworkAccessManager(this);
     this->setIsLoading(true);
@@ -12,12 +14,12 @@ WeatherProvider::WeatherProvider(QObject *parent) : QObject{parent} {
 }
 
 void WeatherProvider::fetchWeather(const QString &city) {
-    const QString apiKey = "5c4fc22e4976b520885e207e94e1bf5d";
+    const QString API_KEY = SecretConfig::OPENWEATHER_API_KEY;
 
     QUrl weatherUrl(QString("https://api.openweathermap.org/data/2.5/weather?q=%1&appid=%2&units=metric")
-                    .arg(city, apiKey));
+                    .arg(city, API_KEY));
     QUrl forecastUrl(QString("https://api.openweathermap.org/data/2.5/forecast?q=%1&appid=%2&units=metric")
-                    .arg(city, apiKey));
+                    .arg(city, API_KEY));
 
     this->city = city;
     this->setIsLoading(true);

@@ -80,3 +80,11 @@ CMakeLists.txt.user*
 .rcc/
 .uic/
 /build*/
+
+# Custom Secret Configs
+SecretConfig.h
+
+# Keep Secret Config templates
+!SecretConfig.h.example
+
+.vscode/
