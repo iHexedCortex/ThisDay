@@ -9,25 +9,38 @@ Rectangle {
     border.width: 1
     radius: height * 0.5
 
-    property var themes: ["dark", "light", "auto"]
-    property int currentThemeIndex: 0
+    enum ThemeMode { Dark, Light }
+    property int currentThemeMode: ThemeSwitch.ThemeMode.Dark
 
     function switchTheme() {
-        let nextThemeIndex = currentThemeIndex + 1;
-        if (nextThemeIndex == themes.length)
-            nextThemeIndex = 0;
-
-        currentThemeIndex = nextThemeIndex;
-        Theme.isDark = currentThemeIndex == 0;
+        switch(currentThemeMode) {
+            case ThemeSwitch.ThemeMode.Dark: {
+                currentThemeMode = ThemeSwitch.ThemeMode.Light;
+                Theme.isDark = false;
+                break;
+            }
+            case ThemeSwitch.ThemeMode.Light: {
+                currentThemeMode = ThemeSwitch.ThemeMode.Dark;
+                Theme.isDark = true;
+                break;
+            }
+        }
     }
 
     Image {
         id: iconImage
         anchors.centerIn: parent
-        source: "qrc:/qt/qml/ThisDay/resources/icons/theme/" + parent.themes[parent.currentThemeIndex] + "-theme.svg"
+        source: Directory.themeIcons + getThemeName(parent.currentThemeMode) + "-theme.svg"
         width: parent.width * 0.6
         height: width
         fillMode: Image.PreserveAspectFit
+
+        function getThemeName(themeMode) {
+            switch(themeMode) {
+                case ThemeSwitch.ThemeMode.Dark: return "dark";
+                case ThemeSwitch.ThemeMode.Light: return "light";
+            }
+        }
     }
 
     MouseArea {
