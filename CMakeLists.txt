@@ -109,6 +109,7 @@ qt_add_qml_module(appThisDay
         RESOURCES
         SOURCES src/config/SecretConfig.h
         SOURCES src/config/SecretConfig.h.example
+        QML_FILES qml/components/OverallWeatherSummaryCard.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

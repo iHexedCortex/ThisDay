@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Layouts
 import QtQuick.Controls
+import "../shared"
 import "../components"
 
 Item {
@@ -9,7 +10,7 @@ Item {
     ColumnLayout {
         id: mainLayout
         anchors.fill: parent
-        spacing: window.width * 0.015
+        spacing: 0
 
         Toolbar {
             id: toolBar
@@ -97,8 +98,19 @@ Item {
             }
         }
 
-        Item {
-            Layout.fillHeight: true
+        Shimmer {
+            id: overallWeatherSummaryCardShimmer
+            Layout.fillWidth: true
+            Layout.preferredHeight: window.width * 0.03
+            Layout.alignment: Qt.AlignHCenter
+            loading: WeatherData.weatherDataLoading || WeatherData.weatherDetailsDataLoading || WeatherData.forecastDataLoading
+
+            OverallWeatherSummaryCard {
+                id: overallWeatherSummaryCard
+                anchors.fill: parent
+                radius: parent.radius
+                visible: !overallWeatherSummaryCardShimmer.loading
+            }
         }
     }
 }
