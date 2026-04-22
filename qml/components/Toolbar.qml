@@ -11,16 +11,10 @@ Rectangle {
         id: mainLayout
         anchors.fill: parent
 
-        SidebarToggle {
-            id: sidebarToggle
-            Layout.preferredWidth: searchbar.height
-            Layout.preferredHeight: Layout.preferredWidth
-        }
-
         Searchbar {
             id: searchbar
-            Layout.preferredWidth: window.width * 0.35
-            Layout.preferredHeight: width * 0.075
+            Layout.preferredWidth: window.width * 0.5
+            Layout.preferredHeight: window.width * 0.03
             Layout.leftMargin: window.width * 0.1
         }
 
@@ -30,7 +24,7 @@ Rectangle {
 
         ThemeSwitch {
             id: themeSwitch
-            Layout.preferredWidth: sidebarToggle.height
+            Layout.preferredWidth: searchbar.height
             Layout.preferredHeight: Layout.preferredWidth
         }
     }
