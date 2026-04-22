@@ -27,7 +27,6 @@
 <p align="center">
   <img src="screenshots/dark_mode_today_page_skeleton.png" width="280" alt="Skeleton Loading Dark">
   <img src="screenshots/light_mode_today_page_skeleton.png" width="280" alt="Skeleton Loading Light">
-  <img src="screenshots/collapsed_sidebar_view.jpg" width="280" alt="Collapsed Sidebar View">
 </p>
 
 * **Adaptive Loaders**: Custom QML skeleton components for low-latency perceived performance during API fetches.
