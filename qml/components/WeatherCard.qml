@@ -137,89 +137,113 @@ Rectangle {
             Layout.alignment: Qt.AlignHCenter
             spacing: 5
 
-            Rectangle {
-                id: maxTemperatureRectangle
+            Shimmer {
+                id: maxTemperatureRectangleShimmer
                 Layout.preferredWidth: root.width * 0.22
                 Layout.preferredHeight: parent.height * 0.9
                 radius: height * 0.5
-                color: Theme.badgeColor
+                loading: WeatherData.forecastDataLoading
 
-                RowLayout {
-                    id: maxTemperatureLayout
+                Rectangle {
+                    id: maxTemperatureRectangle
                     anchors.fill: parent
-                    anchors.leftMargin: parent.width * 0.15
-                    anchors.rightMargin: anchors.leftMargin
-                    spacing: 0
+                    radius: parent.radius
+                    color: Theme.badgeColor
+                    visible: !maxTemperatureRectangleShimmer.loading
 
-                    Image {
-                        id: maxTemperatureImage
-                        source: "qrc:/qt/qml/ThisDay/resources/icons/max-temperature.png"
-                        Layout.preferredWidth: parent.width * 0.35
-                        Layout.preferredHeight: Layout.preferredWidth
-                        fillMode: Image.PreserveAspectFit
-                    }
+                    RowLayout {
+                        id: maxTemperatureLayout
+                        anchors.fill: parent
+                        anchors.leftMargin: parent.width * 0.15
+                        anchors.rightMargin: anchors.leftMargin
+                        spacing: 0
 
-                    Text {
-                        id: maxTemperatureText
-                        text: WeatherData.maxTemperature + "°"
-                        color: Theme.backgroundColor
-                        font.pixelSize: parent.height * 0.6
-                        font.bold: true
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
+                        Image {
+                            id: maxTemperatureImage
+                            source: "qrc:/qt/qml/ThisDay/resources/icons/max-temperature.png"
+                            Layout.preferredWidth: parent.width * 0.35
+                            Layout.preferredHeight: Layout.preferredWidth
+                            fillMode: Image.PreserveAspectFit
+                        }
+
+                        Text {
+                            id: maxTemperatureText
+                            text: WeatherData.maxTemperature + "°"
+                            color: Theme.textColor
+                            font.pixelSize: parent.height * 0.6
+                            font.bold: true
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
                     }
                 }
             }
 
-            Rectangle {
-                id: minTemperatureRectangle
+            Shimmer {
+                id: minTemperatureRectangleShimmer
                 Layout.preferredWidth: maxTemperatureRectangle.width
                 Layout.preferredHeight: maxTemperatureRectangle.height
                 radius: maxTemperatureRectangle.radius
-                color: Theme.primaryColor
+                loading: WeatherData.forecastDataLoading
 
-                RowLayout {
-                    id: minTemperatureLayout
+                Rectangle {
+                    id: minTemperatureRectangle
                     anchors.fill: parent
-                    anchors.leftMargin: maxTemperatureLayout.anchors.leftMargin
-                    anchors.rightMargin: anchors.leftMargin
-                    spacing: 0
+                    radius: parent.radius
+                    color: Theme.primaryColor
+                    visible: !minTemperatureRectangleShimmer.loading
 
-                    Image {
-                        id: minTemperatureImage
-                        source: "qrc:/qt/qml/ThisDay/resources/icons/min-temperature.png"
-                        Layout.preferredWidth: maxTemperatureImage.width
-                        Layout.preferredHeight: maxTemperatureImage.height
-                        fillMode: Image.PreserveAspectFit
-                    }
+                    RowLayout {
+                        id: minTemperatureLayout
+                        anchors.fill: parent
+                        anchors.leftMargin: maxTemperatureLayout.anchors.leftMargin
+                        anchors.rightMargin: anchors.leftMargin
+                        spacing: 0
 
-                    Text {
-                        id: minTemperatureText
-                        text: WeatherData.minTemperature + "°"
-                        color: Theme.backgroundColor
-                        font.pixelSize: maxTemperatureText.font.pixelSize
-                        font.bold: true
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
+                        Image {
+                            id: minTemperatureImage
+                            source: "qrc:/qt/qml/ThisDay/resources/icons/min-temperature.png"
+                            Layout.preferredWidth: maxTemperatureImage.width
+                            Layout.preferredHeight: maxTemperatureImage.height
+                            fillMode: Image.PreserveAspectFit
+                        }
+
+                        Text {
+                            id: minTemperatureText
+                            text: WeatherData.minTemperature + "°"
+                            color: Theme.textColor
+                            font.pixelSize: maxTemperatureText.font.pixelSize
+                            font.bold: true
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
                     }
                 }
             }
 
-            Rectangle {
-                id: feelsLikeTemperatureRectangle
+            Shimmer {
+                id: feelsLikeTemperatureRectangleShimmer
                 Layout.preferredWidth: maxTemperatureRectangle.width * 2
                 Layout.preferredHeight: maxTemperatureRectangle.height
                 radius: maxTemperatureRectangle.radius
-                color: Theme.accentColor
+                loading: WeatherData.forecastDataLoading
 
-                Text {
-                    id: feelsLikeTemperatureText
-                    anchors.centerIn: parent
-                    text: "Feels Like " + WeatherData.feelsLike + "°"
-                    color: Theme.backgroundColor
-                    font.pixelSize: maxTemperatureText.font.pixelSize
-                    font.bold: true
-                    horizontalAlignment: Text.AlignHCenter
+                Rectangle {
+                    id: feelsLikeTemperatureRectangle
+                    anchors.fill: parent
+                    radius: parent.radius
+                    color: Theme.accentColor
+                    visible: !feelsLikeTemperatureRectangleShimmer.loading
+
+                    Text {
+                        id: feelsLikeTemperatureText
+                        anchors.centerIn: parent
+                        text: "Feels Like " + WeatherData.feelsLike + "°"
+                        color: Theme.textColor
+                        font.pixelSize: maxTemperatureText.font.pixelSize
+                        font.bold: true
+                        horizontalAlignment: Text.AlignHCenter
+                    }
                 }
             }
         }
