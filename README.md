@@ -18,8 +18,12 @@
 
 </div>
 
+<br />
+
 ## 🛰️ Core Philosophy
 **ThisDay** is a native desktop engine built to prove that C++ performance and modern "glassmorphic" aesthetics aren't mutually exclusive. By leveraging the **Qt 6 Framework**, it delivers a 60 FPS experience on your Victus hardware while maintaining a zero-latency UI thread through advanced asynchronous polling.
+
+<br />
 
 ## 🛠️ The Tech Stack (Engine Room)
 
@@ -30,6 +34,8 @@
 | **Storage** | `JSON Serialization`, `Qt Settings` | Configuration Persistence |
 | **API** | `OpenWeatherMap OneCall` | Real-time Global Atmospheric Data |
 | **Design** | `Figma`, `Custom SVG Assets` | Visual Identity & Glass Systems |
+
+<br />
 
 ## 🖼️ Visual Subsystems
 
@@ -43,11 +49,19 @@ To eliminate "blank screen fatigue," ThisDay utilizes a custom **Skeleton Loadin
 ### 🌓 Dual-Theme Ecosystem
 * **System Core (Dark)**: Optimized for "Cyber-Noir" desktop setups with deep contrast and neon accents.
 * **Solar-Optimized (Light)**: High-legibility mode designed for high-glare environments.
+<p align="center">
+  <img src="screenshots/dark_mode_today_page.jpg" width="45%" alt="Skeleton Dark">
+  <img src="screenshots/light_mode_today_page.jpg" width="45%" alt="Skeleton Light">
+</p>
+
+<br />
 
 ## 🏗️ Architectural Excellence
 * **Onion Architecture**: Strict separation between the Core Weather Engine (C++) and the Presentation Layer (QML).
 * **Smart Summaries**: Real-time calculated properties (`ComfortLevel`, `ActivityScore`, `AQVibe`) that interpret humidity, UV, and visibility into actionable human insights.
 * **Network Heartbeat**: Built-in connectivity monitoring to ensure the "Synced" status indicator is always accurate.
+
+<br />
 
 ## 🚀 Fast Start
 ### Prerequisites
