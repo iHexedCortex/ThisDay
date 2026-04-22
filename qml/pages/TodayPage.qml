@@ -65,11 +65,13 @@ Item {
                 Layout.preferredWidth: root.width * 0.49
                 Layout.preferredHeight: window.width * 0.14
                 Layout.alignment: Qt.AlignHCenter
+                radius: height * 0.1
                 loading: WeatherData.forecastDataLoading
 
                 HourlyForecastView {
                     id: hourlyForecastView
                     anchors.fill: parent
+                    radius: hourlyForecastViewShimmer.radius
                     visible: !hourlyForecastViewShimmer.loading
                 }
             }
@@ -83,11 +85,13 @@ Item {
                 Layout.preferredWidth: hourlyForecastView.width
                 Layout.preferredHeight: hourlyForecastView.height
                 Layout.alignment: Qt.AlignLeft
+                radius: hourlyForecastViewShimmer.radius
                 loading: WeatherData.forecastDataLoading
 
                 DailyForecastView {
                     id: dailyForecastView
                     anchors.fill: parent
+                    radius: dailyForecastViewShimmer.radius
                     visible: !dailyForecastViewShimmer.loading
                 }
             }

@@ -8,7 +8,6 @@ Rectangle {
     color: Theme.surfaceColor
     border.color: Theme.cardBorderColor
     border.width: 1
-    radius: height * 0.1
 
     ColumnLayout {
         id: mainLayout

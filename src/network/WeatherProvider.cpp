@@ -215,7 +215,6 @@ void WeatherProvider::setWeatherDataLoading(bool newState) {
     emit this->weatherDataLoadingChanged();
 }
 
-
 void WeatherProvider::setWeatherDetailsDataLoading(bool newState) {
     this->weatherDetailsDataLoading = newState;
     emit this->weatherDetailsDataLoadingChanged();

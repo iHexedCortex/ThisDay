@@ -5,7 +5,7 @@ import "../shared"
 Rectangle {
     id: root
     color: loading ? Theme.shimmerBaseColor : "transparent"
-    radius: height * 0.07
+    radius: height * 0.2
     clip: loading
 
     required property bool loading
