@@ -53,7 +53,7 @@ Rectangle {
 
                 Rectangle {
                     id: levelRectangle
-                    Layout.preferredWidth: root.width * 0.1
+                    Layout.preferredWidth: root.width * 0.12
                     Layout.preferredHeight: Layout.preferredWidth
                     color: Theme.accentColor
                     radius: Layout.preferredHeight * 0.5
@@ -62,12 +62,12 @@ Rectangle {
                     Text {
                         id: levelText
                         anchors.fill: parent
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
                         text: root.level
                         color: Theme.textColor
-                        font.pixelSize: parent.height * 0.7
-                        font.weight: Font.DemiBold
+                        font.pixelSize: parent.height * 0.65
+                        font.weight: Font.Bold
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
                     }
                 }
             }

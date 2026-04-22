@@ -8,7 +8,7 @@ Rectangle {
     radius: height * 0.07
     clip: loading
 
-    property bool loading: WeatherData.loading
+    required property bool loading
 
     Rectangle {
         id: shimmer

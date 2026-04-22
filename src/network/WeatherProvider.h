@@ -10,28 +10,30 @@ class WeatherProvider : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(int temperature READ getTemperature NOTIFY dataChanged)
-    Q_PROPERTY(int maxTemperature READ getMaxTemperature NOTIFY dataChanged)
-    Q_PROPERTY(int minTemperature READ getMinTemperature NOTIFY dataChanged)
-    Q_PROPERTY(int feelsLike READ getFeelsLike NOTIFY dataChanged)
-    Q_PROPERTY(QString condition READ getCondition NOTIFY dataChanged)
-    Q_PROPERTY(int humidity READ getHumidity NOTIFY dataChanged)
-    Q_PROPERTY(int windSpeed READ getWindSpeed NOTIFY dataChanged)
-    Q_PROPERTY(QString windDirection READ getWindDirection NOTIFY dataChanged)
-    Q_PROPERTY(int pressure READ getPressure NOTIFY dataChanged)
-    Q_PROPERTY(int cloudiness READ getCloudiness NOTIFY dataChanged)
-    Q_PROPERTY(int visibility READ getVisibility NOTIFY dataChanged)
-    Q_PROPERTY(double dewPoint READ getDewPoint NOTIFY dataChanged)
-    Q_PROPERTY(int precipitation READ getPrecipitation NOTIFY dataChanged)
-    Q_PROPERTY(int uvIndex READ getUVIndex NOTIFY dataChanged)
-    Q_PROPERTY(QString uvLevel READ getUVLevel NOTIFY dataChanged)
-    Q_PROPERTY(QString sunrise READ getSunrise NOTIFY dataChanged)
-    Q_PROPERTY(QString sunset READ getSunset NOTIFY dataChanged)
-    Q_PROPERTY(QString city READ getCity NOTIFY dataChanged)
-    Q_PROPERTY(QVariantList hourlyForecastModel READ getHourlyForecastModel NOTIFY dataChanged)
-    Q_PROPERTY(QVariantList dailyForecastModel READ getDailyForecastModel NOTIFY dataChanged)
-    Q_PROPERTY(bool isLoading READ getIsLoading NOTIFY loadingChanged)
-    Q_PROPERTY(QString lastFetchedTime READ getLastFetchedTime NOTIFY dataChanged)
+    Q_PROPERTY(int temperature READ getTemperature NOTIFY weatherDataChanged)
+    Q_PROPERTY(int maxTemperature READ getMaxTemperature NOTIFY weatherDataChanged)
+    Q_PROPERTY(int minTemperature READ getMinTemperature NOTIFY weatherDataChanged)
+    Q_PROPERTY(int feelsLike READ getFeelsLike NOTIFY weatherDataChanged)
+    Q_PROPERTY(QString condition READ getCondition NOTIFY weatherDataChanged)
+    Q_PROPERTY(int humidity READ getHumidity NOTIFY weatherDetailsDataChanged)
+    Q_PROPERTY(int windSpeed READ getWindSpeed NOTIFY weatherDetailsDataChanged)
+    Q_PROPERTY(QString windDirection READ getWindDirection NOTIFY weatherDetailsDataChanged)
+    Q_PROPERTY(int pressure READ getPressure NOTIFY weatherDetailsDataChanged)
+    Q_PROPERTY(int cloudiness READ getCloudiness NOTIFY weatherDetailsDataChanged)
+    Q_PROPERTY(int visibility READ getVisibility NOTIFY weatherDetailsDataChanged)
+    Q_PROPERTY(double dewPoint READ getDewPoint NOTIFY weatherDetailsDataChanged)
+    Q_PROPERTY(int precipitation READ getPrecipitation NOTIFY weatherDetailsDataChanged)
+    Q_PROPERTY(int uvIndex READ getUVIndex NOTIFY weatherDetailsDataChanged)
+    Q_PROPERTY(QString uvLevel READ getUVLevel NOTIFY weatherDetailsDataChanged)
+    Q_PROPERTY(QString sunrise READ getSunrise NOTIFY weatherDataChanged)
+    Q_PROPERTY(QString sunset READ getSunset NOTIFY weatherDataChanged)
+    Q_PROPERTY(QString city READ getCity NOTIFY weatherDataChanged)
+    Q_PROPERTY(QVariantList hourlyForecastModel READ getHourlyForecastModel NOTIFY forecastDataChanged)
+    Q_PROPERTY(QVariantList dailyForecastModel READ getDailyForecastModel NOTIFY forecastDataChanged)
+    Q_PROPERTY(QString lastFetchedTime READ getLastFetchedTime NOTIFY weatherDataChanged)
+    Q_PROPERTY(bool weatherDataLoading READ getWeatherDataLoading NOTIFY weatherDataLoadingChanged)
+    Q_PROPERTY(bool weatherDetailsDataLoading READ getWeatherDetailsDataLoading NOTIFY weatherDetailsDataLoadingChanged)
+    Q_PROPERTY(bool forecastDataLoading READ getForecastDataLoading NOTIFY forecastDataLoadingChanged)
 
 public:
     explicit WeatherProvider(QObject *parent = nullptr);
@@ -56,18 +58,25 @@ public:
     QString getCity() const;
     QVariantList getHourlyForecastModel() const;
     QVariantList getDailyForecastModel() const;
-    bool getIsLoading() const;
     QString getLastFetchedTime() const;
+    bool getWeatherDataLoading() const;
+    bool getWeatherDetailsDataLoading() const;
+    bool getForecastDataLoading() const;
 
     Q_INVOKABLE void fetchWeather(const QString &city);
     Q_INVOKABLE void updateWeather();
 
 signals:
-    void dataChanged();
-    void loadingChanged();
+    void weatherDataChanged();
+    void forecastDataChanged();
+    void weatherDetailsDataChanged();
+
+    void weatherDataLoadingChanged();
+    void forecastDataLoadingChanged();
+    void weatherDetailsDataLoadingChanged();
 
 private slots:
-    void onResult(QNetworkReply *reply);
+    void onResponse(QNetworkReply *reply);
 
 private:
     QNetworkAccessManager *manager;
@@ -94,10 +103,15 @@ private:
     double longtitude = -999;
     QVariantList hourlyForecastModel;
     QVariantList dailyForecastModel;
-    bool isLoading = false;
     QString lastFetchedTime = "--:--";
+    bool weatherDataLoading = false;
+    bool forecastDataLoading = false;
+    bool weatherDetailsDataLoading = false;
 
-    void setIsLoading(bool newState);
+    void setWeatherDataLoading(bool newState);
+    void setForecastDataLoading(bool newState);
+    void setWeatherDetailsDataLoading(bool newState);
+
     void updateLastFetchedDateTime();
 
     void extractMainInformationFromJson(const QJsonObject &json);

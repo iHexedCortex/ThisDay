@@ -23,7 +23,9 @@ QtObject {
     property var hourlyForecastModel: weatherProvider.hourlyForecastModel
     property var dailyForecastModel: weatherProvider.dailyForecastModel
     property string lastUpdatedTime: weatherProvider.lastFetchedTime
-    property bool loading: weatherProvider.isLoading
+    property bool weatherDataLoading: weatherProvider.weatherDataLoading
+    property bool weatherDetailsDataLoading: weatherProvider.weatherDetailsDataLoading
+    property bool forecastDataLoading: weatherProvider.forecastDataLoading
 
     property string clothingAdvice: {
         if (temperature < 10) return "Heavy Coat"

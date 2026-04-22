@@ -10,15 +10,17 @@
 
 WeatherProvider::WeatherProvider(QObject *parent) : QObject{parent} {
     this->manager = new QNetworkAccessManager(this);
-    this->setIsLoading(true);
-    this->connect(this->manager, &QNetworkAccessManager::finished, this, &WeatherProvider::onResult);
+    this->connect(this->manager, &QNetworkAccessManager::finished, this, &WeatherProvider::onResponse);
 }
 
 void WeatherProvider::fetchWeather(const QString &city) {
     const QString API_KEY = SecretConfig::OPENWEATHER_API_KEY;
 
     this->city = city;
-    this->setIsLoading(true);
+
+    this->setWeatherDataLoading(true);
+    this->setWeatherDetailsDataLoading(true);
+    this->setForecastDataLoading(true);
 
     QUrl weatherUrl(QString("https://api.openweathermap.org/data/2.5/weather?q=%1&appid=%2&units=metric")
                     .arg(city, API_KEY));
@@ -35,7 +37,7 @@ void WeatherProvider::updateWeather() {
     this->fetchWeather(this->city);
 }
 
-void WeatherProvider::onResult(QNetworkReply *reply) {
+void WeatherProvider::onResponse(QNetworkReply *reply) {
     if (reply->error() == QNetworkReply::NoError) {
         QJsonDocument jsonDocument = QJsonDocument::fromJson(reply->readAll());
         QJsonObject json = jsonDocument.object();
@@ -43,6 +45,9 @@ void WeatherProvider::onResult(QNetworkReply *reply) {
         if (json.contains("list")) {
             this->extractHourlyForecastFromJson(json);
             this->extractDailyForecastFromJson(json);
+
+            emit this->forecastDataChanged();
+            this->setForecastDataLoading(false);
         }
         else if (json.contains("main")) {
             this->extractMainInformationFromJson(json);
@@ -53,6 +58,9 @@ void WeatherProvider::onResult(QNetworkReply *reply) {
             this->extractCoordinateInformationFromJson(json);
             this->extractOtherInformationFromJson(json);
 
+            emit this->weatherDataChanged();
+            this->setWeatherDataLoading(false);
+
             const QString API_KEY = SecretConfig::OPENWEATHER_API_KEY;
             QUrl uvUrl(QString("https://api.openweathermap.org/data/2.5/uvi?lat=%1&lon=%2&appid=%3")
                            .arg(this->latitude).arg(this->longtitude).arg(API_KEY));
@@ -60,14 +68,14 @@ void WeatherProvider::onResult(QNetworkReply *reply) {
         }
         else if (json.contains("value")) {
             this->extractUVInformationFromJson(json);
-        }
 
-        emit dataChanged();
+            emit this->weatherDetailsDataChanged();
+            this->setWeatherDetailsDataLoading(false);
+        }
     } else {
         qDebug() << "API Error:" << reply->errorString();
     }
 
-    this->setIsLoading(false);
     reply->deleteLater();
 }
 
@@ -151,18 +159,36 @@ QVariantList WeatherProvider::getDailyForecastModel() const {
     return this->dailyForecastModel;
 }
 
-bool WeatherProvider::getIsLoading() const {
-    return this->isLoading;
-}
-
 QString WeatherProvider::getLastFetchedTime() const {
     return this->lastFetchedTime;
 }
 
-void WeatherProvider::setIsLoading(bool newState) {
-    this->isLoading = newState;
+bool WeatherProvider::getWeatherDataLoading() const {
+    return this->weatherDataLoading;
+}
 
-    emit this->loadingChanged();
+bool WeatherProvider::getWeatherDetailsDataLoading() const {
+    return this->weatherDetailsDataLoading;
+}
+
+bool WeatherProvider::getForecastDataLoading() const {
+    return this->forecastDataLoading;
+}
+
+void WeatherProvider::setWeatherDataLoading(bool newState) {
+    this->weatherDataLoading = newState;
+    emit this->weatherDataLoadingChanged();
+}
+
+
+void WeatherProvider::setWeatherDetailsDataLoading(bool newState) {
+    this->weatherDetailsDataLoading = newState;
+    emit this->weatherDetailsDataLoadingChanged();
+}
+
+void WeatherProvider::setForecastDataLoading(bool newState) {
+    this->forecastDataLoading = newState;
+    emit this->forecastDataLoadingChanged();
 }
 
 void WeatherProvider::updateLastFetchedDateTime() {

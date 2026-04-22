@@ -42,6 +42,7 @@ Item {
                 Layout.preferredWidth: weatherCard.width
                 Layout.preferredHeight: weatherCard.height
                 Layout.alignment: Qt.AlignVCenter
+                loading: WeatherData.weatherDetailsDataLoading
 
                 WeatherDetailsCard {
                     id: weatherDetailsCard
@@ -64,6 +65,7 @@ Item {
                 Layout.preferredWidth: root.width * 0.49
                 Layout.preferredHeight: window.width * 0.14
                 Layout.alignment: Qt.AlignHCenter
+                loading: WeatherData.forecastDataLoading
 
                 HourlyForecastView {
                     id: hourlyForecastView
@@ -81,6 +83,7 @@ Item {
                 Layout.preferredWidth: hourlyForecastView.width
                 Layout.preferredHeight: hourlyForecastView.height
                 Layout.alignment: Qt.AlignLeft
+                loading: WeatherData.forecastDataLoading
 
                 DailyForecastView {
                     id: dailyForecastView

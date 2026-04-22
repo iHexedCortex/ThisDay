@@ -23,6 +23,7 @@ Rectangle {
                 Layout.preferredWidth: root.width
                 Layout.preferredHeight: Layout.preferredWidth * 0.15
                 Layout.alignment: Qt.AlignHCenter
+                loading: WeatherData.weatherDataLoading
 
                 Text {
                     id: cityText
@@ -42,6 +43,7 @@ Rectangle {
                 Layout.preferredWidth: root.width * 0.8
                 Layout.preferredHeight: Layout.preferredWidth * 0.1
                 Layout.alignment: Qt.AlignHCenter
+                loading: WeatherData.weatherDataLoading
 
                 Text {
                     id: dateTimeText
@@ -61,6 +63,7 @@ Rectangle {
             id: weatherIconAndInformationLayoutShimmer
             Layout.preferredWidth: root.width
             Layout.preferredHeight: root.height * 0.7
+            loading: WeatherData.weatherDataLoading
 
             RowLayout {
                 id: weatherIconAndInformationLayout
