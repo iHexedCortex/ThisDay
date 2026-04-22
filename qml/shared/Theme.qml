@@ -18,4 +18,5 @@ QtObject {
     readonly property color badgeColor: theme("#EF4444", "#FF0000")
     readonly property color shimmerBaseColor: theme("#E0E0E0", "#232634")
     readonly property color shimmerHighlightColor: theme("#F5F5F5", "#30FFFFFF")
+    readonly property color weatherSummaryItemTextColor: theme("#1F2937", "#0B0E14")
 }

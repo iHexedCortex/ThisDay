@@ -131,7 +131,7 @@ Rectangle {
         }
 
         RowLayout {
-            id: weatherExtraInformationLayout
+            id: weatherSummaryInformationLayout
             Layout.fillWidth: true
             Layout.preferredHeight: root.height * 0.1
             Layout.alignment: Qt.AlignHCenter
@@ -169,7 +169,7 @@ Rectangle {
                         Text {
                             id: maxTemperatureText
                             text: WeatherData.maxTemperature + "°"
-                            color: Theme.textColor
+                            color: Theme.weatherSummaryTextItemColor
                             font.pixelSize: parent.height * 0.6
                             font.bold: true
                             horizontalAlignment: Text.AlignHCenter
@@ -211,7 +211,7 @@ Rectangle {
                         Text {
                             id: minTemperatureText
                             text: WeatherData.minTemperature + "°"
-                            color: Theme.textColor
+                            color: Theme.weatherSummaryTextItemColor
                             font.pixelSize: maxTemperatureText.font.pixelSize
                             font.bold: true
                             horizontalAlignment: Text.AlignHCenter
@@ -239,7 +239,7 @@ Rectangle {
                         id: feelsLikeTemperatureText
                         anchors.centerIn: parent
                         text: "Feels Like " + WeatherData.feelsLike + "°"
-                        color: Theme.textColor
+                        color: Theme.weatherSummaryTextItemColor
                         font.pixelSize: maxTemperatureText.font.pixelSize
                         font.bold: true
                         horizontalAlignment: Text.AlignHCenter
