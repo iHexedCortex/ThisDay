@@ -11,8 +11,8 @@ class WeatherProvider : public QObject
     Q_OBJECT
 
     Q_PROPERTY(int temperature READ getTemperature NOTIFY weatherDataChanged)
-    Q_PROPERTY(int maxTemperature READ getMaxTemperature NOTIFY weatherDataChanged)
-    Q_PROPERTY(int minTemperature READ getMinTemperature NOTIFY weatherDataChanged)
+    Q_PROPERTY(int maxTemperature READ getMaxTemperature NOTIFY forecastDataChanged)
+    Q_PROPERTY(int minTemperature READ getMinTemperature NOTIFY forecastDataChanged)
     Q_PROPERTY(int feelsLike READ getFeelsLike NOTIFY weatherDataChanged)
     Q_PROPERTY(QString condition READ getCondition NOTIFY weatherDataChanged)
     Q_PROPERTY(int humidity READ getHumidity NOTIFY weatherDetailsDataChanged)

@@ -62,7 +62,7 @@ Rectangle {
         Shimmer {
             id: weatherIconAndInformationLayoutShimmer
             Layout.preferredWidth: root.width
-            Layout.preferredHeight: root.height * 0.7
+            Layout.preferredHeight: root.height * 0.6
             loading: WeatherData.weatherDataLoading
 
             RowLayout {
@@ -130,106 +130,98 @@ Rectangle {
             }
         }
 
-        // RowLayout {
-        //     id: weatherExtraInformationLayout
-        //     Layout.fillWidth: true
-        //     Layout.fillHeight: true
-        //     Layout.alignment: Qt.AlignHCenter
-        //     spacing: 5
+        RowLayout {
+            id: weatherExtraInformationLayout
+            Layout.fillWidth: true
+            Layout.preferredHeight: root.height * 0.1
+            Layout.alignment: Qt.AlignHCenter
+            spacing: 5
 
-        //     Rectangle {
-        //         id: maxTemperatureRectangle
-        //         Layout.preferredWidth: root.width * 0.18
-        //         Layout.preferredHeight: Layout.preferredWidth * 0.4
-        //         radius: height * 0.5
-        //         color: Theme.badgeColor
+            Rectangle {
+                id: maxTemperatureRectangle
+                Layout.preferredWidth: root.width * 0.22
+                Layout.preferredHeight: parent.height * 0.9
+                radius: height * 0.5
+                color: Theme.badgeColor
 
-        //         RowLayout {
-        //             id: maxTemperatureLayout
-        //             anchors.fill: parent
-        //             anchors.leftMargin: parent.width * 0.15
-        //             anchors.rightMargin: anchors.leftMargin
-        //             spacing: 0
+                RowLayout {
+                    id: maxTemperatureLayout
+                    anchors.fill: parent
+                    anchors.leftMargin: parent.width * 0.15
+                    anchors.rightMargin: anchors.leftMargin
+                    spacing: 0
 
-        //             Image {
-        //                 id: maxTemperatureImage
-        //                 source: "qrc:/qt/qml/ThisDay/resources/icons/max-temperature.png"
-        //                 Layout.preferredWidth: parent.width * 0.4
-        //                 Layout.preferredHeight: Layout.preferredWidth
-        //                 fillMode: Image.PreserveAspectFit
-        //             }
+                    Image {
+                        id: maxTemperatureImage
+                        source: "qrc:/qt/qml/ThisDay/resources/icons/max-temperature.png"
+                        Layout.preferredWidth: parent.width * 0.35
+                        Layout.preferredHeight: Layout.preferredWidth
+                        fillMode: Image.PreserveAspectFit
+                    }
 
-        //             Item {
-        //                 Layout.fillWidth: true
-        //             }
+                    Text {
+                        id: maxTemperatureText
+                        text: WeatherData.maxTemperature + "°"
+                        color: Theme.backgroundColor
+                        font.pixelSize: parent.height * 0.6
+                        font.bold: true
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                }
+            }
 
-        //             Text {
-        //                 id: maxTemperatureText
-        //                 text: WeatherData.maxTemperature + "°"
-        //                 color: Theme.backgroundColor
-        //                 font.pixelSize: parent.height * 0.6
-        //                 font.bold: true
-        //                 horizontalAlignment: Text.AlignHCenter
-        //                 verticalAlignment: Text.AlignVCenter
-        //             }
-        //         }
-        //     }
+            Rectangle {
+                id: minTemperatureRectangle
+                Layout.preferredWidth: maxTemperatureRectangle.width
+                Layout.preferredHeight: maxTemperatureRectangle.height
+                radius: maxTemperatureRectangle.radius
+                color: Theme.primaryColor
 
-        //     Rectangle {
-        //         id: minTemperatureRectangle
-        //         Layout.preferredWidth: maxTemperatureRectangle.width
-        //         Layout.preferredHeight: maxTemperatureRectangle.height
-        //         radius: maxTemperatureRectangle.radius
-        //         color: Theme.primaryColor
+                RowLayout {
+                    id: minTemperatureLayout
+                    anchors.fill: parent
+                    anchors.leftMargin: maxTemperatureLayout.anchors.leftMargin
+                    anchors.rightMargin: anchors.leftMargin
+                    spacing: 0
 
-        //         RowLayout {
-        //             id: minTemperatureLayout
-        //             anchors.fill: parent
-        //             anchors.leftMargin: maxTemperatureLayout.anchors.leftMargin
-        //             anchors.rightMargin: anchors.leftMargin
-        //             spacing: 0
+                    Image {
+                        id: minTemperatureImage
+                        source: "qrc:/qt/qml/ThisDay/resources/icons/min-temperature.png"
+                        Layout.preferredWidth: maxTemperatureImage.width
+                        Layout.preferredHeight: maxTemperatureImage.height
+                        fillMode: Image.PreserveAspectFit
+                    }
 
-        //             Image {
-        //                 id: minTemperatureImage
-        //                 source: "qrc:/qt/qml/ThisDay/resources/icons/min-temperature.png"
-        //                 Layout.preferredWidth: maxTemperatureImage.width
-        //                 Layout.preferredHeight: maxTemperatureImage.height
-        //                 fillMode: Image.PreserveAspectFit
-        //             }
+                    Text {
+                        id: minTemperatureText
+                        text: WeatherData.minTemperature + "°"
+                        color: Theme.backgroundColor
+                        font.pixelSize: maxTemperatureText.font.pixelSize
+                        font.bold: true
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                }
+            }
 
-        //             Item {
-        //                 Layout.fillWidth: true
-        //             }
+            Rectangle {
+                id: feelsLikeTemperatureRectangle
+                Layout.preferredWidth: maxTemperatureRectangle.width * 2
+                Layout.preferredHeight: maxTemperatureRectangle.height
+                radius: maxTemperatureRectangle.radius
+                color: Theme.accentColor
 
-        //             Text {
-        //                 id: minTemperatureText
-        //                 text: WeatherData.minTemperature + "°"
-        //                 color: Theme.backgroundColor
-        //                 font.pixelSize: maxTemperatureText.font.pixelSize
-        //                 font.bold: true
-        //                 horizontalAlignment: Text.AlignHCenter
-        //                 verticalAlignment: Text.AlignVCenter
-        //             }
-        //         }
-        //     }
-
-        //     Rectangle {
-        //         id: feelsLikeTemperatureRectangle
-        //         Layout.preferredWidth: maxTemperatureRectangle.width * 2
-        //         Layout.preferredHeight: maxTemperatureRectangle.height
-        //         radius: maxTemperatureRectangle.radius
-        //         color: Theme.accentColor
-
-        //         Text {
-        //             id: feelsLikeTemperatureText
-        //             anchors.centerIn: parent
-        //             text: "Feels Like " + WeatherData.feelsLike + "°"
-        //             color: Theme.backgroundColor
-        //             font.pixelSize: maxTemperatureText.font.pixelSize
-        //             font.bold: true
-        //             horizontalAlignment: Text.AlignHCenter
-        //         }
-        //     }
-        // }
+                Text {
+                    id: feelsLikeTemperatureText
+                    anchors.centerIn: parent
+                    text: "Feels Like " + WeatherData.feelsLike + "°"
+                    color: Theme.backgroundColor
+                    font.pixelSize: maxTemperatureText.font.pixelSize
+                    font.bold: true
+                    horizontalAlignment: Text.AlignHCenter
+                }
+            }
+        }
     }
 }

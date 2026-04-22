@@ -29,7 +29,7 @@ Item {
             WeatherCard {
                 id: weatherCard
                 Layout.preferredWidth: window.width * 0.35
-                Layout.preferredHeight: Layout.preferredWidth * 0.75
+                Layout.preferredHeight: Layout.preferredWidth * 0.8
                 Layout.alignment: Qt.AlignVCenter
             }
 
