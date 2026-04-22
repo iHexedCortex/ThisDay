@@ -12,7 +12,7 @@ Rectangle {
     Image {
         id: iconImage
         anchors.centerIn: parent
-        source: "qrc:/qt/qml/ThisDay/resources/icons/toolbar/" + (window.sidebarExpanded ? "collapse.svg" : "expand.svg")
+        source: Directory.toolbarIcons + (window.sidebarExpanded ? "collapse.svg" : "expand.svg")
         width: parent.width * 0.6
         height: width
         fillMode: Image.PreserveAspectFit

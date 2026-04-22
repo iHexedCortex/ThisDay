@@ -160,7 +160,7 @@ Rectangle {
 
                         Image {
                             id: maxTemperatureImage
-                            source: "qrc:/qt/qml/ThisDay/resources/icons/max-temperature.png"
+                            source: Directory.icons + "max-temperature.png"
                             Layout.preferredWidth: parent.width * 0.35
                             Layout.preferredHeight: Layout.preferredWidth
                             fillMode: Image.PreserveAspectFit
@@ -169,7 +169,7 @@ Rectangle {
                         Text {
                             id: maxTemperatureText
                             text: WeatherData.maxTemperature + "°"
-                            color: Theme.weatherSummaryTextItemColor
+                            color: Theme.weatherSummaryItemTextColor
                             font.pixelSize: parent.height * 0.6
                             font.bold: true
                             horizontalAlignment: Text.AlignHCenter
@@ -202,7 +202,7 @@ Rectangle {
 
                         Image {
                             id: minTemperatureImage
-                            source: "qrc:/qt/qml/ThisDay/resources/icons/min-temperature.png"
+                            source: Directory.icons + "min-temperature.png"
                             Layout.preferredWidth: maxTemperatureImage.width
                             Layout.preferredHeight: maxTemperatureImage.height
                             fillMode: Image.PreserveAspectFit
@@ -211,7 +211,7 @@ Rectangle {
                         Text {
                             id: minTemperatureText
                             text: WeatherData.minTemperature + "°"
-                            color: Theme.weatherSummaryTextItemColor
+                            color: Theme.weatherSummaryItemTextColor
                             font.pixelSize: maxTemperatureText.font.pixelSize
                             font.bold: true
                             horizontalAlignment: Text.AlignHCenter
@@ -239,7 +239,7 @@ Rectangle {
                         id: feelsLikeTemperatureText
                         anchors.centerIn: parent
                         text: "Feels Like " + WeatherData.feelsLike + "°"
-                        color: Theme.weatherSummaryTextItemColor
+                        color: Theme.weatherSummaryItemTextColor
                         font.pixelSize: maxTemperatureText.font.pixelSize
                         font.bold: true
                         horizontalAlignment: Text.AlignHCenter
