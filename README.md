@@ -2,7 +2,7 @@
 
 <img src="resources/images/title.png" width="620" alt="ThisDay Logo" style="margin-bottom: 20px;">
 
-# ☁️ ThisDay Weather Engine
+# 🌤️ ThisDay Weather Engine
 ### `Cinematic Glassmorphic Dashboard • High-Performance Systems Engineering`
 
 [![System Status](https://img.shields.io/badge/System-Stable-41CD52?style=for-the-badge&logo=qt&logoColor=white)](https://github.com/iHexedCortex/ThisDay)
