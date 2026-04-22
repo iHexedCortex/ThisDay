@@ -10,17 +10,12 @@
 
 WeatherProvider::WeatherProvider(QObject *parent) : QObject{parent} {
     this->manager = new QNetworkAccessManager(this);
+    this->setDefaultDataValues();
     this->connect(this->manager, &QNetworkAccessManager::finished, this, &WeatherProvider::onResponse);
 }
 
 void WeatherProvider::fetchWeather(const QString &city) {
     const QString API_KEY = SecretConfig::OPENWEATHER_API_KEY;
-
-    this->city = city;
-
-    this->setWeatherDataLoading(true);
-    this->setWeatherDetailsDataLoading(true);
-    this->setForecastDataLoading(true);
 
     QUrl weatherUrl(QString("https://api.openweathermap.org/data/2.5/weather?q=%1&appid=%2&units=metric")
                     .arg(city, API_KEY));
@@ -29,6 +24,12 @@ void WeatherProvider::fetchWeather(const QString &city) {
     QUrl forecastUrl(QString("https://api.openweathermap.org/data/2.5/forecast?q=%1&appid=%2&units=metric")
                     .arg(city, API_KEY));
     this->manager->get(QNetworkRequest(forecastUrl));
+
+    this->city = city;
+
+    this->setWeatherDataLoading(true);
+    this->setWeatherDetailsDataLoading(true);
+    this->setForecastDataLoading(true);
 
     this->updateLastFetchedDateTime();
 }
@@ -77,6 +78,40 @@ void WeatherProvider::onResponse(QNetworkReply *reply) {
     }
 
     reply->deleteLater();
+}
+
+void WeatherProvider::setDefaultDataValues() {
+    static const int defaultIntValue = -999;
+    static const double defaultDoubleValue = -999;
+    static const QString defaultStringValue = "Loading...";
+    static const bool defaultLoadingValue = false;
+
+    this->temperature = defaultIntValue;
+    this->maxTemperature = defaultIntValue;
+    this->minTemperature = defaultIntValue;
+    this->feelsLike = defaultIntValue;
+    this->humidity = defaultIntValue;
+    this->windSpeed = defaultDoubleValue;
+    this->windDirection = "--";
+    this->pressure = defaultIntValue;
+    this->cloudiness = defaultIntValue;
+    this->visibility = defaultDoubleValue;
+    this->dewPoint = defaultDoubleValue;
+    this->precipitation = defaultDoubleValue;
+    this->uvLevel = defaultStringValue;
+    this->uvIndex = defaultIntValue;
+    this->condition = defaultStringValue;
+    this->sunrise = defaultStringValue;
+    this->sunset = defaultStringValue;
+    this->city = "Detecting...";
+    this->latitude = defaultDoubleValue;
+    this->longtitude = defaultDoubleValue;
+    this->hourlyForecastModel = {};
+    this->dailyForecastModel = {};
+    this->lastFetchedTime = defaultStringValue;
+    this->weatherDataLoading = defaultLoadingValue;
+    this->forecastDataLoading = defaultLoadingValue;
+    this->weatherDetailsDataLoading = defaultLoadingValue;
 }
 
 int WeatherProvider::getTemperature() const {

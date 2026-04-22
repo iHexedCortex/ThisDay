@@ -70,7 +70,6 @@ signals:
     void weatherDataChanged();
     void forecastDataChanged();
     void weatherDetailsDataChanged();
-
     void weatherDataLoadingChanged();
     void forecastDataLoadingChanged();
     void weatherDetailsDataLoadingChanged();
@@ -81,33 +80,34 @@ private slots:
 private:
     QNetworkAccessManager *manager;
 
-    int temperature = -999;
-    int maxTemperature = -999;
-    int minTemperature = -999;
-    int feelsLike = -999;
-    int humidity = -999;
-    double windSpeed = -999;
-    QString windDirection = "--";
-    int pressure = -999;
-    int cloudiness = -999;
-    double visibility = -999;
-    double dewPoint = -999;
-    double precipitation = -999;
-    QString uvLevel = "Loading...";
-    int uvIndex = -999;
-    QString condition = "Loading...";
-    QString sunrise = "--:--";
-    QString sunset = "--:--";
-    QString city = "Detecting...";
-    double latitude = -999;
-    double longtitude = -999;
+    int temperature;
+    int maxTemperature;
+    int minTemperature;
+    int feelsLike;
+    int humidity;
+    double windSpeed;
+    QString windDirection;
+    int pressure;
+    int cloudiness;
+    double visibility;
+    double dewPoint;
+    double precipitation;
+    QString uvLevel;
+    int uvIndex;
+    QString condition;
+    QString sunrise;
+    QString sunset;
+    QString city;
+    double latitude;
+    double longtitude;
     QVariantList hourlyForecastModel;
     QVariantList dailyForecastModel;
-    QString lastFetchedTime = "--:--";
-    bool weatherDataLoading = false;
-    bool forecastDataLoading = false;
-    bool weatherDetailsDataLoading = false;
+    QString lastFetchedTime;
+    bool weatherDataLoading;
+    bool forecastDataLoading;
+    bool weatherDetailsDataLoading;
 
+    void setDefaultDataValues();
     void setWeatherDataLoading(bool newState);
     void setForecastDataLoading(bool newState);
     void setWeatherDetailsDataLoading(bool newState);
