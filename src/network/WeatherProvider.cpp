@@ -134,6 +134,10 @@ QString WeatherProvider::getCondition() const {
     return this->condition;
 }
 
+QString WeatherProvider::getDescription() const {
+    return this->description;
+}
+
 int WeatherProvider::getHumidity() const {
     return this->humidity;
 }
@@ -298,6 +302,7 @@ void WeatherProvider::extractOtherInformationFromJson(const QJsonObject &json) {
     if (!weatherArray.isEmpty()) {
         QJsonObject weatherObj = weatherArray[0].toObject();
         this->condition = weatherObj["main"].toString();
+        this->description = weatherObj["description"].toString();
     }
 }
 

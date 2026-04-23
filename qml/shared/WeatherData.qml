@@ -17,6 +17,7 @@ QtObject {
     property string uvLevel: weatherProvider.uvLevel
     property int uvIndex: weatherProvider.uvIndex
     property string condition: weatherProvider.condition
+    property string description: weatherProvider.description
     property string sunrise: weatherProvider.sunrise
     property string sunset: weatherProvider.sunset
     property string city: weatherProvider.city

@@ -107,10 +107,10 @@ Rectangle {
                     }
 
                     Text {
-                        id: conditionText
+                        id: descriptionText
                         Layout.preferredWidth: temperatureText.width
                         Layout.preferredHeight: temperatureText.height * 0.4
-                        text: WeatherData.condition
+                        text: WeatherData.description.substring(0, 1).toUpperCase() + WeatherData.description.substring(1, WeatherData.description.length)
                         color: Theme.subTextColor
                         font.pixelSize: height * 0.7
                         font.weight: Font.DemiBold

@@ -15,8 +15,9 @@ class WeatherProvider : public QObject
     Q_PROPERTY(int minTemperature READ getMinTemperature NOTIFY forecastDataChanged)
     Q_PROPERTY(int feelsLike READ getFeelsLike NOTIFY weatherDataChanged)
     Q_PROPERTY(QString condition READ getCondition NOTIFY weatherDataChanged)
+    Q_PROPERTY(QString description READ getDescription NOTIFY weatherDataChanged)
     Q_PROPERTY(int humidity READ getHumidity NOTIFY weatherDetailsDataChanged)
-    Q_PROPERTY(int windSpeed READ getWindSpeed NOTIFY weatherDetailsDataChanged)
+    Q_PROPERTY(double windSpeed READ getWindSpeed NOTIFY weatherDetailsDataChanged)
     Q_PROPERTY(QString windDirection READ getWindDirection NOTIFY weatherDetailsDataChanged)
     Q_PROPERTY(int pressure READ getPressure NOTIFY weatherDetailsDataChanged)
     Q_PROPERTY(int cloudiness READ getCloudiness NOTIFY weatherDetailsDataChanged)
@@ -53,6 +54,7 @@ public:
     QString getUVLevel() const;
     int getUVIndex() const;
     QString getCondition() const;
+    QString getDescription() const;
     QString getSunrise() const;
     QString getSunset() const;
     QString getCity() const;
@@ -95,6 +97,7 @@ private:
     QString uvLevel;
     int uvIndex;
     QString condition;
+    QString description;
     QString sunrise;
     QString sunset;
     QString city;
