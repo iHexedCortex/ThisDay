@@ -19,15 +19,34 @@ qt_add_executable(appThisDay
 qt_add_qml_module(appThisDay
     URI ThisDay
     VERSION 1.0
+
     QML_FILES
         Main.qml
+        
         qml/components/Searchbar.qml
-        qml/pages/TodayPage.qml
         qml/components/Sidebar.qml
         qml/components/SidebarButton.qml
         qml/components/SidebarStatItem.qml
-        Temp.qml
         qml/components/WeatherCard.qml
+        qml/components/Toolbar.qml
+        qml/components/DetectLocationButton.qml
+        qml/components/HourlyForecastItem.qml
+        qml/components/HourlyForecastView.qml
+        qml/components/DailyForecastItem.qml
+        qml/components/WeatherDetailsItem.qml
+        qml/components/WeatherDetailsCard.qml
+        qml/components/ThemeSwitch.qml
+        qml/components/DailyForecastView.qml
+        qml/components/Shimmer.qml
+        qml/components/SidebarToggle.qml
+        qml/components/OverallWeatherSummaryCard.qml
+        
+        qml/pages/TodayPage.qml
+
+        qml/shared/Theme.qml
+        qml/shared/Directory.qml
+        qml/shared/WeatherData.qml
+        qml/shared/Clock.qml
 
     RESOURCES
         resources/icons/app/icon.ico
@@ -87,29 +106,13 @@ qt_add_qml_module(appThisDay
         resources/icons/theme/light-theme.svg
         resources/icons/theme/auto-theme.svg
 
-        QML_FILES qml/components/Toolbar.qml
-        QML_FILES
-        QML_FILES qml/components/DetectLocationButton.qml
-        QML_FILES qml/components/HourlyForecastItem.qml
-        QML_FILES qml/components/HourlyForecastView.qml
-        QML_FILES qml/shared/Theme.qml
-        RESOURCES qml/shared/qmldir
-        QML_FILES qml/components/DailyForecastItem.qml
-        QML_FILES qml/components/WeatherDetailsItem.qml
-        QML_FILES qml/components/WeatherDetailsCard.qml
-        QML_FILES qml/components/ThemeSwitch.qml
-        QML_FILES qml/components/DailyForecastView.qml
-        SOURCES src/network/WeatherProvider.h src/network/WeatherProvider.cpp
-        SOURCES src/network/LocationProvider.h src/network/LocationProvider.cpp
-        QML_FILES qml/components/Shimmer.qml
-        QML_FILES qml/shared/Directory.qml
-        QML_FILES qml/shared/WeatherData.qml
-        QML_FILES qml/shared/Clock.qml
-        QML_FILES qml/components/SidebarToggle.qml
-        RESOURCES
-        SOURCES src/config/SecretConfig.h
-        SOURCES src/config/SecretConfig.h.example
-        QML_FILES qml/components/OverallWeatherSummaryCard.qml
+        qml/shared/qmldir
+        
+    SOURCES 
+        src/network/WeatherProvider.h src/network/WeatherProvider.cpp
+        src/network/LocationProvider.h src/network/LocationProvider.cpp
+    
+        src/config/SecretConfig.h
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
