@@ -1,53 +1,79 @@
 <div align="center">
 
-# ☁️ ThisDay Weather Engine
-### `High-Performance Glassmorphic Desktop Experience`
+<img src="resources/images/title.png" width="620" alt="ThisDay Logo" style="margin-bottom: 20px;">
+
+# 🌤️ ThisDay Weather Engine
+### `Cinematic Glassmorphic Dashboard • High-Performance Systems Engineering`
 
 [![System Status](https://img.shields.io/badge/System-Stable-41CD52?style=for-the-badge&logo=qt&logoColor=white)](https://github.com/iHexedCortex/ThisDay)
-[![Kernel](https://img.shields.io/badge/Kernel-Qt_6.x-blue?style=for-the-badge&logo=cpp&logoColor=white)](https://www.qt.io/)
-[![Architecture](https://img.shields.io/badge/Architecture-Onion/DDD-orange?style=for-the-badge)](https://github.com/iHexedCortex/ThisDay)
+[![Kernel](https://img.shields.io/badge/Kernel-Qt_6.6+-blue?style=for-the-badge&logo=qt&logoColor=white)](https://www.qt.io/)
+[![Architecture](https://img.shields.io/badge/Architecture-DDD/Onion-orange?style=for-the-badge)](https://github.com/iHexedCortex/ThisDay)
+[![Performance](https://img.shields.io/badge/Render-GPU_Accelerated-red?style=for-the-badge)](https://github.com/iHexedCortex/ThisDay)
 
 ---
 
-<img src="screenshots/dark_mode_today_page.jpg" width="100%" alt="ThisDay Dashboard Dark Mode">
+<img src="screenshots/dark_mode_today_page.jpg" width="100%" alt="ThisDay Dashboard Dark Mode" style="border-radius: 10px;">
+
+*"Weather data isn't just numbers; it's a narrative. ThisDay interprets atmospheric complexity into human insight."*
 
 </div>
 
-## 🛰️ Technical Overview
-**ThisDay** is a native desktop application designed to bridge the gap between heavy system performance and elegant, modern aesthetics. Built on the **Qt 6 framework**, it utilizes a dual-layer architecture: a high-speed **C++ backend** for data handling and a **QML frontend** for GPU-accelerated rendering.
+<br />
 
-## 🖼️ Visual Subsystems (Gallery)
+## 🛰️ Core Philosophy
+**ThisDay** is a native desktop engine built to prove that C++ performance and modern "glassmorphic" aesthetics aren't mutually exclusive. By leveraging the **Qt 6 Framework**, it delivers a 60 FPS experience on your Victus hardware while maintaining a zero-latency UI thread through advanced asynchronous polling.
 
-| Dark Mode (System Core) | Light Mode (High Contrast) |
-| :---: | :---: |
-| <img src="screenshots/dark_mode_today_page.jpg" width="400"> | <img src="screenshots/light_mode_today_page.jpg" width="400"> |
-| *Full Cinematic Dashboard* | *Solar-Optimized UI* |
+<br />
 
-### 🧩 UI/UX Architecture
+## 🛠️ The Tech Stack (Engine Room)
+
+| Layer | Technologies | Purpose |
+| :--- | :--- | :--- |
+| **Frontend** | `QML`, `Qt Quick`, `JavaScript` | Declarative UI & Fluid Animations |
+| **Backend** | `C++ 20`, `Qt Network`, `CMake` | Logic, Networking, & Resource Management |
+| **Storage** | `JSON Serialization`, `Qt Settings` | Configuration Persistence |
+| **API** | `OpenWeatherMap OneCall` | Real-time Global Atmospheric Data |
+| **Design** | `Figma`, `Custom SVG Assets` | Visual Identity & Glass Systems |
+
+<br />
+
+## 🖼️ Visual Subsystems
+
+### 🧩 Perceived Performance (Skeleton State)
+To eliminate "blank screen fatigue," ThisDay utilizes a custom **Skeleton Loading System**.
 <p align="center">
-  <img src="screenshots/dark_mode_today_page_skeleton.png" width="280" alt="Skeleton Loading Dark">
-  <img src="screenshots/light_mode_today_page_skeleton.png" width="280" alt="Skeleton Loading Light">
+  <img src="screenshots/dark_mode_today_page_skeleton.png" width="45%" alt="Skeleton Dark">
+  <img src="screenshots/light_mode_today_page_skeleton.png" width="45%" alt="Skeleton Light">
 </p>
 
-* **Adaptive Loaders**: Custom QML skeleton components for low-latency perceived performance during API fetches.
-* **Sidebar Engine**: Fully animatable collapsed state to maximize screen real estate.
-* **Glassmorphic Design**: Custom-built widgets with real-time transparency effects.
+### 🌓 Dual-Theme Ecosystem
+* **System Core (Dark)**: Optimized for "Cyber-Noir" desktop setups with deep contrast and neon accents.
+* **Solar-Optimized (Light)**: High-legibility mode designed for high-glare environments.
+<p align="center">
+  <img src="screenshots/dark_mode_today_page.jpg" width="45%" alt="Skeleton Dark">
+  <img src="screenshots/light_mode_today_page.jpg" width="45%" alt="Skeleton Light">
+</p>
 
-## 🏗️ System Architecture
-* **Backend**: C++ / Qt Network (OpenWeather API integration).
-* **Frontend**: QML / Qt Quick Controls 2 / Custom Shaders.
-* **Design Pattern**: Feature-based modular architecture for scalability.
-* **Performance**: Asynchronous API polling to ensure the UI thread remains at 60 FPS.
+<br />
 
-## 🚀 Installation & Build
+## 🏗️ Architectural Excellence
+* **Onion Architecture**: Strict separation between the Core Weather Engine (C++) and the Presentation Layer (QML).
+* **Smart Summaries**: Real-time calculated properties (`ComfortLevel`, `ActivityScore`, `AQVibe`) that interpret humidity, UV, and visibility into actionable human insights.
+* **Network Heartbeat**: Built-in connectivity monitoring to ensure the "Synced" status indicator is always accurate.
+
+<br />
+
+## 🚀 Fast Start
+### Prerequisites
+* **Qt 6.6+** (Desktop Development Kit)
+* **CMake 3.20+**
+* **C++ 20** compatible compiler (MSVC/MinGW)
+
 ```bash
 # Clone the repository
 git clone [https://github.com/iHexedCortex/ThisDay.git](https://github.com/iHexedCortex/ThisDay.git)
 
-# Navigate to directory
+# Configure and Build
 cd ThisDay
-
-# Build using CMake
-mkdir build && cd build
-cmake ..
-make
+cmake -B build -S .
+cmake --build build --config Release
