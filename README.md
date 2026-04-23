@@ -69,12 +69,22 @@ Since **ThisDay** is built using high-performance C++20 and Qt 6.9, the build sy
 
 ### 1. Configuration (Crucial Step)
 This project uses **OpenWeather API**. To keep API keys secure, the actual header is git-ignored. You must create your own before building:
-1. Locate `src/SecretConfig.h.example`.
-2. Rename or copy it to `src/SecretConfig.h`.
+1. Locate `src/config/SecretConfig.h.example`.
+2. Rename or copy it to `src/config/SecretConfig.h`.
 3. Open the file and paste your OpenWeather API key:
+
    ```cpp
-   // src/SecretConfig.h
-   #define API_KEY "YOUR_OPENWEATHER_KEY_HERE"
+    // src/config/SecretConfig.h
+    #ifndef SECRETCONFIG_H
+    #define SECRETCONFIG_H
+    
+    #include <QString>
+    
+    namespace SecretConfig {
+        const QString OPENWEATHER_API_KEY = "YOUR_API_KEY";
+    }
+    
+    #endif // SECRETCONFIG_H
 
 --
 
