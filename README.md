@@ -63,17 +63,47 @@ To eliminate "blank screen fatigue," ThisDay utilizes a custom **Skeleton Loadin
 
 <br />
 
-## 🚀 Fast Start
-### Prerequisites
-* **Qt 6.6+** (Desktop Development Kit)
-* **CMake 3.20+**
-* **C++ 20** compatible compiler (MSVC/MinGW)
+## 🛠️ Installation & Build Guide
 
-```bash
-# Clone the repository
+Since **ThisDay** is built using high-performance C++20 and Qt 6.9, the build system needs to know where your Qt SDK is located. Follow one of the two approaches below.
+
+### 1. Configuration (Crucial Step)
+This project uses **OpenWeather API**. To keep API keys secure, the actual header is git-ignored. You must create your own before building:
+1. Locate `src/SecretConfig.h.example`.
+2. Rename or copy it to `src/SecretConfig.h`.
+3. Open the file and paste your OpenWeather API key:
+   ```cpp
+   // src/SecretConfig.h
+   #define API_KEY "YOUR_OPENWEATHER_KEY_HERE"
+
+--
+
+### 2. The Qt Creator Way (Recommended for Developers)
+This is the most reliable method for Windows users to ensure all environment variables are mapped correctly.
+
+1. **Open Project:** Launch Qt Creator and open the `CMakeLists.txt` file.
+2. **Select Kit:** In the "Configure Project" screen, select **Desktop Qt 6.9.2 MinGW 64-bit**. 
+   * *Note: Avoid using "Imported Kits" as they may lack compiler paths.*
+3. **Set Build Type:** * Go to the **Projects** tab (left sidebar).
+   * Under **Build Settings**, set the **Build type** to `Release`.
+4. **Configure CMake:** If you see a "Qt6 not found" error, add the following variable in the CMake section:
+   * **Key:** `CMAKE_PREFIX_PATH`
+   * **Value:** `D:/Qt/6.9.2/mingw_64` (Adjust to your actual Qt path).
+5. **Build:** Press `Ctrl + B` or click the **Hammer** icon.
+
+---
+
+### 3. The "Bare-Handed" Terminal Way
+Use this approach if you prefer building via Command Line/PowerShell. You must manually point CMake to your Qt installation.
+
+```powershell
+# 1. Clone the repository
 git clone [https://github.com/iHexedCortex/ThisDay.git](https://github.com/iHexedCortex/ThisDay.git)
-
-# Configure and Build
 cd ThisDay
-cmake -B build -S .
+
+# 2. Configure the project
+# Replace the path below with your actual Qt MinGW installation folder
+cmake -B build -S . -DCMAKE_PREFIX_PATH="D:/Qt/6.9.2/mingw_64" -DCMAKE_BUILD_TYPE=Release
+
+# 3. Build the executable
 cmake --build build --config Release
