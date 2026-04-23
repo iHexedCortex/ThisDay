@@ -89,3 +89,5 @@ SecretConfig.h
 
 .vscode/
 .idea/
+
+!resources.rs
