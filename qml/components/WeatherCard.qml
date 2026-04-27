@@ -5,7 +5,7 @@ import "../shared"
 
 Rectangle {
     id: root
-    color: "red"
+    color: "transparent"
 
     ColumnLayout {
         id: mainLayout
