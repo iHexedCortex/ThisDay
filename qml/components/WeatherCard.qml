@@ -5,12 +5,16 @@ import "../shared"
 
 Rectangle {
     id: root
-    color: "transparent"
+    color: "red"
 
     ColumnLayout {
         id: mainLayout
         anchors.fill: parent
         spacing: 0
+
+        Item {
+            Layout.fillHeight: true
+        }
 
         ColumnLayout {
             id: locationLayout
@@ -62,7 +66,7 @@ Rectangle {
         Shimmer {
             id: weatherIconAndInformationLayoutShimmer
             Layout.preferredWidth: root.width
-            Layout.preferredHeight: root.height * 0.6
+            Layout.preferredHeight: root.height * 0.4
             loading: WeatherData.weatherDataLoading
 
             RowLayout {
@@ -77,7 +81,7 @@ Rectangle {
 
                 Image {
                     id: weatherIconImage
-                    Layout.preferredWidth: weatherIconAndInformationLayoutShimmer.width * 0.4
+                    Layout.preferredWidth: weatherIconAndInformationLayoutShimmer.height
                     Layout.preferredHeight: Layout.preferredWidth
                     Layout.alignment: Qt.AlignVCenter
                     source: Directory.weatherIcons + WeatherData.condition + ".png"
@@ -89,45 +93,46 @@ Rectangle {
                     Layout.fillWidth: true
                 }
 
-                ColumnLayout {
-                    id: weatherInformationLayout
-                    spacing: 0
-
-                    Text {
-                        id: temperatureText
-                        Layout.preferredWidth: weatherIconAndInformationLayoutShimmer - weatherIconImage.width
-                        Layout.preferredHeight: weatherIconAndInformationLayoutShimmer.height * 0.6
-                        text: WeatherData.temperature + "°"
-                        color: Theme.textColor
-                        font.pixelSize: height * 0.8
-                        font.bold: true
-                        horizontalAlignment: Text.AlignLeft
-                        verticalAlignment: Text.AlignVCenter
-                        visible: !weatherIconAndInformationLayoutShimmer.loading
-                    }
-
-                    Text {
-                        id: descriptionText
-                        Layout.preferredWidth: temperatureText.width
-                        Layout.preferredHeight: temperatureText.height * 0.4
-                        text: WeatherData.description.substring(0, 1).toUpperCase() + WeatherData.description.substring(1, WeatherData.description.length)
-                        color: Theme.subTextColor
-                        font.pixelSize: height * 0.7
-                        font.weight: Font.DemiBold
-                        horizontalAlignment: Text.AlignLeft
-                        verticalAlignment: Text.AlignVCenter
-                        visible: !weatherIconAndInformationLayoutShimmer.loading
-                    }
-
-                    Item {
-                        Layout.fillHeight: true
-                    }
+                Text {
+                    id: temperatureText
+                    Layout.preferredWidth: weatherIconImage.width
+                    Layout.preferredHeight: weatherIconImage.height
+                    text: WeatherData.temperature + "°"
+                    color: Theme.textColor
+                    font.pixelSize: height * 0.7
+                    font.bold: true
+                    horizontalAlignment: Text.AlignLeft
+                    verticalAlignment: Text.AlignVCenter
+                    visible: !weatherIconAndInformationLayoutShimmer.loading
                 }
 
                 Item {
                     Layout.fillWidth: true
                 }
             }
+        }
+
+        Shimmer {
+            id: descriptionTextShimmer
+            Layout.fillWidth: true
+            Layout.preferredHeight: temperatureText.height * 0.35
+            loading: WeatherData.weatherDataLoading
+
+            Text {
+                id: descriptionText
+                anchors.fill: parent
+                text: WeatherData.description.substring(0, 1).toUpperCase() + WeatherData.description.substring(1, WeatherData.description.length)
+                color: Theme.subTextColor
+                font.pixelSize: height * 0.7
+                font.weight: Font.DemiBold
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                visible: !weatherIconAndInformationLayoutShimmer.loading
+            }
+        }
+
+        Item {
+            Layout.fillHeight: true
         }
 
         RowLayout {
@@ -246,6 +251,10 @@ Rectangle {
                     }
                 }
             }
+        }
+
+        Item {
+            Layout.fillHeight: true
         }
     }
 }
