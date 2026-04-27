@@ -16,64 +16,57 @@ Rectangle {
             Layout.fillHeight: true
         }
 
-        ColumnLayout {
-            id: locationLayout
+        Shimmer {
+            id: cityTextShimmer
             Layout.fillWidth: true
-            Layout.fillHeight: true
-            spacing: 0
+            Layout.preferredHeight: width * 0.15
+            Layout.alignment: Qt.AlignHCenter
+            loading: WeatherData.weatherDataLoading
 
-            Shimmer {
-                id: cityTextShimmer
-                Layout.preferredWidth: root.width
-                Layout.preferredHeight: Layout.preferredWidth * 0.15
-                Layout.alignment: Qt.AlignHCenter
-                loading: WeatherData.weatherDataLoading
-
-                Text {
-                    id: cityText
-                    anchors.fill: parent
-                    text: WeatherData.city
-                    font.pixelSize: parent.height * 0.7
-                    font.bold: true
-                    color: Theme.textColor
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    visible: !cityTextShimmer.loading
-                }
-            }
-
-            Shimmer {
-                id: dateTimeTextShimmer
-                Layout.preferredWidth: root.width * 0.8
-                Layout.preferredHeight: Layout.preferredWidth * 0.1
-                Layout.alignment: Qt.AlignHCenter
-                loading: WeatherData.weatherDataLoading
-
-                Text {
-                    id: dateTimeText
-                    anchors.fill: parent
-                    text: Clock.currentDate + " • " + Clock.currentTime
-                    font.pixelSize: parent.height * 0.7
-                    font.weight: Font.DemiBold
-                    color: Theme.subTextColor
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    visible: !dateTimeTextShimmer.loading
-                }
+            Text {
+                id: cityText
+                anchors.fill: parent
+                text: WeatherData.city
+                font.pixelSize: parent.height * 0.7
+                font.bold: true
+                color: Theme.textColor
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                visible: !cityTextShimmer.loading
             }
         }
 
         Shimmer {
-            id: weatherIconAndInformationLayoutShimmer
-            Layout.preferredWidth: root.width
-            Layout.preferredHeight: root.height * 0.4
+            id: dateTimeTextShimmer
+            Layout.preferredWidth: parent.width * 0.8
+            Layout.preferredHeight: width * 0.1
+            Layout.alignment: Qt.AlignHCenter
+            loading: WeatherData.weatherDataLoading
+
+            Text {
+                id: dateTimeText
+                anchors.fill: parent
+                text: Clock.currentDate + " • " + Clock.currentTime
+                font.pixelSize: parent.height * 0.7
+                font.weight: Font.DemiBold
+                color: Theme.subTextColor
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                visible: !dateTimeTextShimmer.loading
+            }
+        }
+
+        Shimmer {
+            id: weatherIconAndTemperatureShimmer
+            Layout.preferredWidth: parent.width
+            Layout.preferredHeight: parent.height * 0.45
             loading: WeatherData.weatherDataLoading
 
             RowLayout {
-                id: weatherIconAndInformationLayout
+                id: weatherIconAndTemperatureLayout
                 anchors.fill: parent
                 spacing: 0
-                visible: !weatherIconAndInformationLayoutShimmer.loading
+                visible: !weatherIconAndTemperatureShimmer.loading
 
                 Item {
                     Layout.fillWidth: true
@@ -81,12 +74,12 @@ Rectangle {
 
                 Image {
                     id: weatherIconImage
-                    Layout.preferredWidth: weatherIconAndInformationLayoutShimmer.height
-                    Layout.preferredHeight: Layout.preferredWidth
+                    Layout.preferredWidth: weatherIconAndTemperatureShimmer.height
+                    Layout.preferredHeight: width
                     Layout.alignment: Qt.AlignVCenter
                     source: Directory.weatherIcons + WeatherData.condition + ".png"
                     fillMode: Image.PreserveAspectFit
-                    visible: !weatherIconAndInformationLayoutShimmer.loading
+                    visible: !weatherIconAndTemperatureShimmer.loading
                 }
 
                 Item {
@@ -99,11 +92,11 @@ Rectangle {
                     Layout.preferredHeight: weatherIconImage.height
                     text: WeatherData.temperature + "°"
                     color: Theme.textColor
-                    font.pixelSize: height * 0.7
+                    font.pixelSize: height * 0.8
                     font.bold: true
-                    horizontalAlignment: Text.AlignLeft
+                    horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
-                    visible: !weatherIconAndInformationLayoutShimmer.loading
+                    visible: !weatherIconAndTemperatureShimmer.loading
                 }
 
                 Item {
@@ -127,7 +120,7 @@ Rectangle {
                 font.weight: Font.DemiBold
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
-                visible: !weatherIconAndInformationLayoutShimmer.loading
+                visible: !weatherIconAndTemperatureShimmer.loading
             }
         }
 
@@ -136,7 +129,7 @@ Rectangle {
         }
 
         RowLayout {
-            id: weatherSummaryInformationLayout
+            id: weatherSummaryLayout
             Layout.fillWidth: true
             Layout.preferredHeight: root.height * 0.1
             Layout.alignment: Qt.AlignHCenter
@@ -165,9 +158,9 @@ Rectangle {
 
                         Image {
                             id: maxTemperatureImage
-                            source: Directory.icons + "max-temperature.png"
                             Layout.preferredWidth: parent.width * 0.35
-                            Layout.preferredHeight: Layout.preferredWidth
+                            Layout.preferredHeight: width
+                            source: Directory.icons + "max-temperature.png"
                             fillMode: Image.PreserveAspectFit
                         }
 
@@ -175,7 +168,7 @@ Rectangle {
                             id: maxTemperatureText
                             text: WeatherData.maxTemperature + "°"
                             color: Theme.weatherSummaryItemTextColor
-                            font.pixelSize: parent.height * 0.6
+                            font.pixelSize: parent.height * 0.7
                             font.bold: true
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
@@ -207,9 +200,9 @@ Rectangle {
 
                         Image {
                             id: minTemperatureImage
-                            source: Directory.icons + "min-temperature.png"
                             Layout.preferredWidth: maxTemperatureImage.width
                             Layout.preferredHeight: maxTemperatureImage.height
+                            source: Directory.icons + "min-temperature.png"
                             fillMode: Image.PreserveAspectFit
                         }
 
