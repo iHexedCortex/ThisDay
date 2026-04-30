@@ -221,7 +221,7 @@ void WeatherProvider::extractCurrentInformationFromJson(const QJsonObject &json)
     this->temperature = json["temperature_2m"].toDouble();
     this->feelsLike = json["apparent_temperature"].toDouble();
     this->humidity = json["relative_humidity_2m"].toInt();
-    this->pressure = json["pressure_msl"].toInt();
+    this->pressure = static_cast<int>(json["pressure_msl"].toDouble());
     this->windSpeed = json["wind_speed_10m"].toDouble();
     this->cloudiness = json["cloud_cover"].toInt();
     this->precipitation = json["precipitation"].toDouble();
