@@ -21,7 +21,7 @@
 <br />
 
 ## 🛰️ Core Philosophy
-**ThisDay** is a native desktop engine built to prove that C++ performance and modern "glassmorphic" aesthetics aren't mutually exclusive. By leveraging the **Qt 6 Framework**, it delivers a 60 FPS experience on your Victus hardware while maintaining a zero-latency UI thread through advanced asynchronous polling.
+**ThisDay** is a native desktop engine built to prove that C++ performance and modern "glassmorphic" aesthetics aren't mutually exclusive. By leveraging the **Qt 6 Framework**, it delivers a fluid 60 FPS experience on modern hardware—like the HP Victus platform—while maintaining a zero-latency UI thread through advanced asynchronous polling.
 
 <br />
 
@@ -32,8 +32,16 @@
 | **Frontend** | `QML`, `Qt Quick`, `JavaScript` | Declarative UI & Fluid Animations |
 | **Backend** | `C++ 20`, `Qt Network`, `CMake` | Logic, Networking, & Resource Management |
 | **Storage** | `JSON Serialization`, `Qt Settings` | Configuration Persistence |
-| **API** | `OpenWeatherMap OneCall` | Real-time Global Atmospheric Data |
+| **API** | `Open-Meteo Geocoding & Forecast` | Real-time Global Data (No API Key Required) |
 | **Design** | `Figma`, `Custom SVG Assets` | Visual Identity & Glass Systems |
+
+<br />
+
+## 🏗️ Architectural Excellence
+* **Onion Architecture**: Strict separation between the Core Weather Engine (C++) and the Presentation Layer (QML).
+* **Zero-Config API**: Utilizes the **Open-Meteo** ecosystem, removing the friction of API key management while providing high-resolution global forecasting.
+* **Smart Summaries**: Real-time calculated properties (`ComfortLevel`, `ActivityScore`, `AQVibe`) that interpret complex atmospheric data into actionable human insights.
+* **Network Heartbeat**: Built-in connectivity monitoring to ensure the "Synced" status indicator accurately reflects real-time data availability.
 
 <br />
 
@@ -49,63 +57,28 @@ To eliminate "blank screen fatigue," ThisDay utilizes a custom **Skeleton Loadin
 ### 🌓 Dual-Theme Ecosystem
 * **System Core (Dark)**: Optimized for "Cyber-Noir" desktop setups with deep contrast and neon accents.
 * **Solar-Optimized (Light)**: High-legibility mode designed for high-glare environments.
-<p align="center">
-  <img src="screenshots/dark_mode_today_page.jpg" width="45%" alt="Skeleton Dark">
-  <img src="screenshots/light_mode_today_page.jpg" width="45%" alt="Skeleton Light">
-</p>
 
 <br />
 
-## 🏗️ Architectural Excellence
-* **Onion Architecture**: Strict separation between the Core Weather Engine (C++) and the Presentation Layer (QML).
-* **Smart Summaries**: Real-time calculated properties (`ComfortLevel`, `ActivityScore`, `AQVibe`) that interpret humidity, UV, and visibility into actionable human insights.
-* **Network Heartbeat**: Built-in connectivity monitoring to ensure the "Synced" status indicator is always accurate.
+## 🛠️ Build Guide
 
-<br />
+Since **ThisDay** uses **Open-Meteo**, there are no API keys required for the build process.
 
-## 🛠️ Installation & Build Guide
-
-Since **ThisDay** is built using high-performance C++20 and Qt 6.9, the build system needs to know where your Qt SDK is located. Follow one of the two approaches below.
-
-### 1. Configuration (Crucial Step)
-This project uses **OpenWeather API**. To keep API keys secure, the actual header is git-ignored. You must create your own before building:
-1. Locate `src/config/SecretConfig.h.example`.
-2. Rename or copy it to `src/config/SecretConfig.h`.
-3. Open the file and paste your OpenWeather API key:
-
-   ```cpp
-    // src/config/SecretConfig.h
-    #ifndef SECRETCONFIG_H
-    #define SECRETCONFIG_H
-    
-    #include <QString>
-    
-    namespace SecretConfig {
-        const QString OPENWEATHER_API_KEY = "YOUR_API_KEY";
-    }
-    
-    #endif // SECRETCONFIG_H
-
---
-
-### 2. The Qt Creator Way (Recommended for Developers)
+### 1. The Qt Creator Way (Recommended)
 This is the most reliable method for Windows users to ensure all environment variables are mapped correctly.
 
 1. **Open Project:** Launch Qt Creator and open the `CMakeLists.txt` file.
-2. **Select Kit:** In the "Configure Project" screen, select **Desktop Qt 6.9.2 MinGW 64-bit**. 
-   * *Note: Avoid using "Imported Kits" as they may lack compiler paths.*
-3. **Set Build Type:** * Go to the **Projects** tab (left sidebar).
-   * Under **Build Settings**, set the **Build type** to `Release`.
-4. **Configure CMake:** If you see a "Qt6 not found" error, add the following variable in the CMake section:
+2. **Select Kit:** Select **Desktop Qt 6.x.x MinGW 64-bit**.
+3. **Set Build Type:** Go to the **Projects** tab and set the **Build type** to `Release`.
+4. **Configure CMake:** If Qt6 is not found, add this variable in the CMake section:
    * **Key:** `CMAKE_PREFIX_PATH`
-   * **Value:** `D:/Qt/6.9.2/mingw_64` (Adjust to your actual Qt path).
-5. **Build:** Press `Ctrl + B` or click the **Hammer** icon.
+   * **Value:** `C:/Qt/6.x.x/mingw_64` (Adjust to your actual path).
+5. **Build:** Press `Ctrl + B`.
 
 ---
 
-### 3. The "Bare-Handed" Terminal Way
-Use this approach if you prefer building via Command Line/PowerShell. You must manually point CMake to your Qt installation.
-
+### 2. The Terminal Way
+Use this approach if you prefer building via Command Line or PowerShell.
 ```powershell
 # 1. Clone the repository
 git clone [https://github.com/iHexedCortex/ThisDay.git](https://github.com/iHexedCortex/ThisDay.git)
