@@ -2,6 +2,8 @@ import QtQuick 2.15
 import QtQuick.Layouts
 import QtQuick.Controls
 import "../shared"
+import "../shared/utils/DataConverter.js" as DataConverter
+import "../shared/utils/DataPrettier.js" as DataPrettier
 
 Rectangle {
     id: root
@@ -90,7 +92,7 @@ Rectangle {
                     id: temperatureText
                     Layout.preferredWidth: weatherIconImage.width
                     Layout.preferredHeight: weatherIconImage.height
-                    text: WeatherData.temperature + "°"
+                    text: DataPrettier.temperature(DataConverter.temperature(WeatherData.temperature, settings.temperatureUnit)) + "°"
                     color: Theme.textColor
                     font.pixelSize: height * 0.8
                     font.bold: true
@@ -166,7 +168,7 @@ Rectangle {
 
                         Text {
                             id: maxTemperatureText
-                            text: WeatherData.maxTemperature + "°"
+                            text: DataPrettier.temperature(DataConverter.temperature(WeatherData.maxTemperature, settings.temperatureUnit)) + "°"
                             color: Theme.weatherSummaryItemTextColor
                             font.pixelSize: parent.height * 0.7
                             font.bold: true
@@ -208,7 +210,7 @@ Rectangle {
 
                         Text {
                             id: minTemperatureText
-                            text: WeatherData.minTemperature + "°"
+                            text: DataPrettier.temperature(DataConverter.temperature(WeatherData.minTemperature, settings.temperatureUnit)) + "°"
                             color: Theme.weatherSummaryItemTextColor
                             font.pixelSize: maxTemperatureText.font.pixelSize
                             font.bold: true
@@ -236,7 +238,7 @@ Rectangle {
                     Text {
                         id: feelsLikeTemperatureText
                         anchors.centerIn: parent
-                        text: "Feels Like " + WeatherData.feelsLike + "°"
+                        text: "Feels Like " + DataPrettier.temperature(DataConverter.temperature(WeatherData.feelsLike, settings.temperatureUnit)) + "°"
                         color: Theme.weatherSummaryItemTextColor
                         font.pixelSize: maxTemperatureText.font.pixelSize
                         font.bold: true

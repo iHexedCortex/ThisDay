@@ -113,6 +113,11 @@ qt_add_qml_module(appThisDay
         src/network/LocationProvider.h src/network/LocationProvider.cpp
     
         src/config/SecretConfig.h
+        SOURCES src/settings/SettingsManager.h src/settings/SettingsManager.cpp
+        SOURCES src/settings/DefaultSettings.h
+        SOURCES src/common/types/WeatherTypes.h
+        QML_FILES qml/shared/utils/DataConverter.js
+        QML_FILES qml/shared/utils/DataPrettier.js
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

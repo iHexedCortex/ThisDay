@@ -16,9 +16,8 @@ Rectangle {
 
     required property string week
     required property string condition
-    required property color bubbleColor
-    required property int maxTemperature
-    required property int minTemperature
+    required property real maxTemperature
+    required property real minTemperature
 
     ColumnLayout {
         id: mainLayout
@@ -83,24 +82,15 @@ Rectangle {
             }
         }
 
-        Rectangle {
-            id: conditionRectangle
-            Layout.preferredWidth: root.condition.length * root.width * 0.08
-            Layout.preferredHeight: root.width * 0.17
-            Layout.alignment: Qt.AlignHCenter
-            radius: height * 0.5
-            color: "transparent"
-
-            Text {
-                id: conditionText
-                anchors.fill: parent
-                text: root.condition
-                color: "white"
-                font.pixelSize: parent.height * 0.8
-                font.bold: true
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-            }
+        Text {
+            id: conditionText
+            Layout.fillWidth: true
+            text: root.condition
+            color: "white"
+            font.pixelSize: parent.width * 0.15
+            font.bold: true
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
         }
     }
 }

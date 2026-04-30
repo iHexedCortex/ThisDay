@@ -1,9 +1,10 @@
-import QtQuick
+import QtQuick 2.15
 import QtQuick.Controls
 import QtQuick.Layouts
 import "qml/components"
 import "qml/pages"
 import "qml/shared"
+import Weather.Types 1.0
 
 Window {
     id: window

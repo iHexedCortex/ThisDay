@@ -2,6 +2,9 @@ import QtQuick 2.15
 import QtQuick.Layouts
 import QtQuick.Controls
 import "../shared"
+import "../shared/utils/DataConverter.js" as DataConverter
+import "../shared/utils/DataPrettier.js" as DataPrettier
+import Weather.Types 1.0
 
 Rectangle {
     id: root
@@ -72,7 +75,6 @@ Rectangle {
             icon:  Directory.weatherDetailsIcons + "uv.png"
             label: "UV Level"
             value: WeatherData.uvLevel
-            unit: ""
             level: WeatherData.uvIndex
         }
 
@@ -82,8 +84,8 @@ Rectangle {
             Layout.preferredHeight: windItem.height
             icon:  Directory.weatherDetailsIcons + "dew.png"
             label: "Dew Point"
-            value: WeatherData.dewPoint
-            unit: "°C"
+            value: DataPrettier.dewPoint((DataConverter.temperature(WeatherData.dewPoint, settings.temperatureUnit)))
+            unit: "°"
         }
 
         WeatherDetailsItem {

@@ -2,6 +2,8 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts
 import "../shared"
+import "../shared/utils/DataConverter.js" as DataConverter
+import "../shared/utils/DataPrettier.js" as DataPrettier
 
 Rectangle {
     id: root
@@ -45,10 +47,9 @@ Rectangle {
                 HourlyForecastItem {
                     anchors.fill: parent
                     hour: modelData.time
-                    temperature: modelData.temperature
                     condition: modelData.condition
+                    temperature: DataPrettier.temperature((DataConverter.temperature(modelData.temperature, settings.temperatureUnit)))
                     humidity: modelData.humidity
-                    icon: Directory.weatherIcons + modelData.condition + ".png";
                 }
             }
         }

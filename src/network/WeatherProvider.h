@@ -6,14 +6,54 @@
 #include <QNetworkAccessManager>
 #include <QVariantList>
 
-class WeatherProvider : public QObject
+struct HourlyForecastUnit final {
+    Q_GADGET
+
+    Q_PROPERTY(QString time MEMBER time)
+    Q_PROPERTY(QString condition MEMBER condition)
+    Q_PROPERTY(double temperature MEMBER temperature)
+    Q_PROPERTY(int humidity MEMBER humidity)
+
+public:
+    QString time;
+    QString condition;
+    double temperature;
+    int humidity;
+};
+
+struct DailyForecastUnit final {
+    Q_GADGET
+
+    Q_PROPERTY(QString week MEMBER week)
+    Q_PROPERTY(QString condition MEMBER condition)
+    Q_PROPERTY(double maxTemperature MEMBER maxTemperature)
+    Q_PROPERTY(double minTemperature MEMBER minTemperature)
+    Q_PROPERTY(QString description MEMBER description)
+
+public:
+    QString week;
+    QString condition;
+    double maxTemperature;
+    double minTemperature;
+    QString description;
+
+private:
+    QString date;
+
+    friend class WeatherProvider;
+};
+
+using HourlyForecastModel = QList<HourlyForecastUnit>;
+using DailyForecastModel = QList<DailyForecastUnit>;
+
+class WeatherProvider final : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(int temperature READ getTemperature NOTIFY weatherDataChanged)
-    Q_PROPERTY(int maxTemperature READ getMaxTemperature NOTIFY forecastDataChanged)
-    Q_PROPERTY(int minTemperature READ getMinTemperature NOTIFY forecastDataChanged)
-    Q_PROPERTY(int feelsLike READ getFeelsLike NOTIFY weatherDataChanged)
+    Q_PROPERTY(double temperature READ getTemperature NOTIFY weatherDataChanged)
+    Q_PROPERTY(double maxTemperature READ getMaxTemperature NOTIFY forecastDataChanged)
+    Q_PROPERTY(double minTemperature READ getMinTemperature NOTIFY forecastDataChanged)
+    Q_PROPERTY(double feelsLike READ getFeelsLike NOTIFY weatherDataChanged)
     Q_PROPERTY(QString condition READ getCondition NOTIFY weatherDataChanged)
     Q_PROPERTY(QString description READ getDescription NOTIFY weatherDataChanged)
     Q_PROPERTY(int humidity READ getHumidity NOTIFY weatherDetailsDataChanged)
@@ -29,8 +69,8 @@ class WeatherProvider : public QObject
     Q_PROPERTY(QString sunrise READ getSunrise NOTIFY weatherDataChanged)
     Q_PROPERTY(QString sunset READ getSunset NOTIFY weatherDataChanged)
     Q_PROPERTY(QString city READ getCity NOTIFY weatherDataChanged)
-    Q_PROPERTY(QVariantList hourlyForecastModel READ getHourlyForecastModel NOTIFY forecastDataChanged)
-    Q_PROPERTY(QVariantList dailyForecastModel READ getDailyForecastModel NOTIFY forecastDataChanged)
+    Q_PROPERTY(HourlyForecastModel hourlyForecastModel READ getHourlyForecastModel NOTIFY forecastDataChanged)
+    Q_PROPERTY(DailyForecastModel dailyForecastModel READ getDailyForecastModel NOTIFY forecastDataChanged)
     Q_PROPERTY(QString lastFetchedTime READ getLastFetchedTime NOTIFY weatherDataChanged)
     Q_PROPERTY(bool weatherDataLoading READ getWeatherDataLoading NOTIFY weatherDataLoadingChanged)
     Q_PROPERTY(bool weatherDetailsDataLoading READ getWeatherDetailsDataLoading NOTIFY weatherDetailsDataLoadingChanged)
@@ -39,10 +79,10 @@ class WeatherProvider : public QObject
 public:
     explicit WeatherProvider(QObject *parent = nullptr);
 
-    int getTemperature() const;
-    int getMaxTemperature() const;
-    int getMinTemperature() const;
-    int getFeelsLike() const;
+    double getTemperature() const;
+    double getMaxTemperature() const;
+    double getMinTemperature() const;
+    double getFeelsLike() const;
     int getHumidity() const;
     double getWindSpeed() const;
     QString getWindDirection() const;
@@ -58,8 +98,8 @@ public:
     QString getSunrise() const;
     QString getSunset() const;
     QString getCity() const;
-    QVariantList getHourlyForecastModel() const;
-    QVariantList getDailyForecastModel() const;
+    HourlyForecastModel getHourlyForecastModel() const;
+    DailyForecastModel getDailyForecastModel() const;
     QString getLastFetchedTime() const;
     bool getWeatherDataLoading() const;
     bool getWeatherDetailsDataLoading() const;
@@ -82,10 +122,10 @@ private slots:
 private:
     QNetworkAccessManager *manager;
 
-    int temperature;
-    int maxTemperature;
-    int minTemperature;
-    int feelsLike;
+    double temperature;
+    double maxTemperature;
+    double minTemperature;
+    double feelsLike;
     int humidity;
     double windSpeed;
     QString windDirection;
@@ -103,8 +143,8 @@ private:
     QString city;
     double latitude;
     double longtitude;
-    QVariantList hourlyForecastModel;
-    QVariantList dailyForecastModel;
+    HourlyForecastModel hourlyForecastModel;
+    DailyForecastModel dailyForecastModel;
     QString lastFetchedTime;
     bool weatherDataLoading;
     bool forecastDataLoading;

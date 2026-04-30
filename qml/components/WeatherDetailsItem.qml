@@ -9,7 +9,7 @@ Rectangle {
 
     required property string label
     required property var value
-    required property string unit
+    property string unit: ""
     required property string icon
     property string extra
     property string level

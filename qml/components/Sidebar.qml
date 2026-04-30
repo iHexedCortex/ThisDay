@@ -173,7 +173,7 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
-                onClicked: weatherProvider.updateWeather();
+                onClicked: weatherProvider.updateWeather()
             }
         }
     }

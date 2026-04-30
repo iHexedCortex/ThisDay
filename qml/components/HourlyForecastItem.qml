@@ -15,10 +15,9 @@ Rectangle {
     }
 
     required property string hour;
-    required property int temperature;
     required property string condition;
+    required property real temperature;
     required property int humidity;
-    required property string icon;
 
     function humidityLevel(humidity) {
         if (humidity < 35) return "low";
@@ -45,7 +44,7 @@ Rectangle {
 
         Image {
             id: weatherIconImage
-            source: root.icon
+            source: Directory.weatherIcons + root.condition + ".png"
             Layout.preferredWidth: root.height * 0.32
             Layout.preferredHeight: Layout.preferredWidth
             Layout.alignment: Qt.AlignHCenter

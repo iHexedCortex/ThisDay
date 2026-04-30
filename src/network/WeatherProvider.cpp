@@ -17,12 +17,10 @@ WeatherProvider::WeatherProvider(QObject *parent) : QObject{parent} {
 void WeatherProvider::fetchWeather(const QString &city) {
     const QString API_KEY = SecretConfig::OPENWEATHER_API_KEY;
 
-    QUrl weatherUrl(QString("https://api.openweathermap.org/data/2.5/weather?q=%1&appid=%2&units=metric")
-                    .arg(city, API_KEY));
+    QUrl weatherUrl(QString("https://api.openweathermap.org/data/2.5/weather?q=%1&appid=%2&units=metric").arg(city, API_KEY));
     this->manager->get(QNetworkRequest(weatherUrl));
 
-    QUrl forecastUrl(QString("https://api.openweathermap.org/data/2.5/forecast?q=%1&appid=%2&units=metric")
-                    .arg(city, API_KEY));
+    QUrl forecastUrl(QString("https://api.openweathermap.org/data/2.5/forecast?q=%1&appid=%2&units=metric").arg(city, API_KEY));
     this->manager->get(QNetworkRequest(forecastUrl));
 
     this->city = city;
@@ -82,14 +80,14 @@ void WeatherProvider::onResponse(QNetworkReply *reply) {
 
 void WeatherProvider::setDefaultDataValues() {
     static const int defaultIntValue = -999;
-    static const double defaultDoubleValue = -999;
+    static const double defaultDoubleValue = -999.0;
     static const QString defaultStringValue = "Loading...";
     static const bool defaultLoadingValue = false;
 
-    this->temperature = defaultIntValue;
-    this->maxTemperature = defaultIntValue;
-    this->minTemperature = defaultIntValue;
-    this->feelsLike = defaultIntValue;
+    this->temperature = defaultDoubleValue;
+    this->maxTemperature = defaultDoubleValue;
+    this->minTemperature = defaultDoubleValue;
+    this->feelsLike = defaultDoubleValue;
     this->humidity = defaultIntValue;
     this->windSpeed = defaultDoubleValue;
     this->windDirection = "--";
@@ -114,19 +112,19 @@ void WeatherProvider::setDefaultDataValues() {
     this->weatherDetailsDataLoading = defaultLoadingValue;
 }
 
-int WeatherProvider::getTemperature() const {
+double WeatherProvider::getTemperature() const {
     return this->temperature;
 }
 
-int WeatherProvider::getMaxTemperature() const {
+double WeatherProvider::getMaxTemperature() const {
     return this->maxTemperature;
 }
 
-int WeatherProvider::getMinTemperature() const {
+double WeatherProvider::getMinTemperature() const {
     return this->minTemperature;
 }
 
-int WeatherProvider::getFeelsLike() const {
+double WeatherProvider::getFeelsLike() const {
     return this->feelsLike;
 }
 
@@ -190,11 +188,11 @@ QString WeatherProvider::getCity() const {
     return this->city;
 }
 
-QVariantList WeatherProvider::getHourlyForecastModel() const {
+HourlyForecastModel WeatherProvider::getHourlyForecastModel() const {
     return this->hourlyForecastModel;
 }
 
-QVariantList WeatherProvider::getDailyForecastModel() const {
+DailyForecastModel WeatherProvider::getDailyForecastModel() const {
     return this->dailyForecastModel;
 }
 
@@ -238,11 +236,11 @@ void WeatherProvider::updateLastFetchedDateTime() {
 void WeatherProvider::extractMainInformationFromJson(const QJsonObject &json) {
     QJsonObject mainObj = json["main"].toObject();
 
-    this->temperature = static_cast<int>(mainObj["temp"].toDouble());
-    this->feelsLike = static_cast<int>(mainObj["feels_like"].toDouble());
+    this->temperature = mainObj["temp"].toDouble();
+    this->feelsLike = mainObj["feels_like"].toDouble();
     this->humidity = mainObj["humidity"].toInt();
     this->pressure = mainObj["pressure"].toInt();
-    this->dewPoint = qRound(this->temperature - ((100 - this->humidity) / 5.0));
+    this->dewPoint = this->temperature - ((100 - this->humidity) / 5.0);
 }
 
 void WeatherProvider::extractSysInformationFromJson(const QJsonObject &json) {
@@ -258,7 +256,7 @@ void WeatherProvider::extractSysInformationFromJson(const QJsonObject &json) {
 void WeatherProvider::extractRainInformationFromJson(const QJsonObject &json) {
     QJsonObject rainObj = json["rain"].toObject();
 
-    this->precipitation = qRound(rainObj["3h"].toDouble());
+    this->precipitation = rainObj["3h"].toDouble();
 }
 
 void WeatherProvider::extractWindInformationFromJson(const QJsonObject &json) {
@@ -296,7 +294,7 @@ void WeatherProvider::extractUVInformationFromJson(const QJsonObject &json) {
 }
 
 void WeatherProvider::extractOtherInformationFromJson(const QJsonObject &json) {
-    this->visibility = qRound(json["visibility"].toDouble() / 1000.0);
+    this->visibility = json["visibility"].toDouble() / 1000.0;
 
     QJsonArray weatherArray = json["weather"].toArray();
     if (!weatherArray.isEmpty()) {
@@ -308,34 +306,35 @@ void WeatherProvider::extractOtherInformationFromJson(const QJsonObject &json) {
 
 void WeatherProvider::extractHourlyForecastFromJson(const QJsonObject &json) {
     QJsonArray list = json["list"].toArray();
-    QVariantList model;
 
-    int dailyHigh = -999;
-    int dailyLow = 999;
+    this->hourlyForecastModel.clear();
+
+    double dailyHigh = -999;
+    double dailyLow = 999;
 
     for (int i = 2; i < 10; i++) {
         QJsonObject item = list[i].toObject();
         QJsonObject mainObj = item["main"].toObject();
 
-        QVariantMap map;
+        HourlyForecastUnit unit;
 
         QString dateTime = item["dt_txt"].toString();
         QString time = dateTime.split(" ")[1].left(5);
 
-        map["time"] = time;
-        map["temperature"] = static_cast<int>(mainObj["temp"].toDouble());
-        map["humidity"] = mainObj["humidity"].toInt();
+        unit.time = time;
+        unit.temperature = mainObj["temp"].toDouble();
+        unit.humidity = mainObj["humidity"].toInt();
 
         QJsonArray weatherArray = item["weather"].toArray();
         if (!weatherArray.isEmpty()) {
             QJsonObject weatherObj = weatherArray[0].toObject();
 
-            map["condition"] = weatherObj["main"].toString();
+            unit.condition = weatherObj["main"].toString();
         }
 
-        model.append(map);
+        this->hourlyForecastModel.append(unit);
 
-        int temperature = static_cast<int>(mainObj["temp"].toDouble());
+        const double temperature = mainObj["temp"].toDouble();
         if (temperature > dailyHigh)
             dailyHigh = temperature;
         if (temperature < dailyLow)
@@ -344,66 +343,50 @@ void WeatherProvider::extractHourlyForecastFromJson(const QJsonObject &json) {
 
     this->maxTemperature = dailyHigh;
     this->minTemperature = dailyLow;
-
-    this->hourlyForecastModel = model;
 }
 
 void WeatherProvider::extractDailyForecastFromJson(const QJsonObject &json) {
     QJsonArray list = json["list"].toArray();
 
-    struct DayStats {
-        int maxTemperature = -999;
-        int minTemperature = 999;
-        QString condition;
-    };
+    this->dailyForecastModel.clear();
 
-    QMap<QString, DayStats> map;
-    QString currentDate = QDate::currentDate().toString("yyyy-MM-dd");
+    DailyForecastUnit unit;
+
+    const QString currentDate = QDate::currentDate().toString("yyyy-MM-dd");
+    bool isTomorrow = true;
 
     for (const QJsonValue &value : list) {
         QJsonObject item = value.toObject();
-        QString dateTime = item["dt_txt"].toString();
-        QString date = dateTime.split(" ")[0];
+
+        const QString dateTime = item["dt_txt"].toString();
+        const QString date = dateTime.split(" ")[0];
 
         if (date == currentDate) continue;
 
         QJsonObject mainObj = item["main"].toObject();
 
-        int currentMaxTemperature = static_cast<int>(mainObj["temp_max"].toDouble());
-        int currentMinTemperature = static_cast<int>(mainObj["temp_min"].toDouble());
+        double currentMaxTemperature = mainObj["temp_max"].toDouble();
+        double currentMinTemperature = mainObj["temp_min"].toDouble();
 
-        DayStats &stats = map[date];
-        if (currentMaxTemperature > stats.maxTemperature) stats.maxTemperature = currentMaxTemperature;
-        if (currentMinTemperature < stats.minTemperature) stats.minTemperature = currentMinTemperature;
+        if (currentMaxTemperature > unit.maxTemperature) unit.maxTemperature = currentMaxTemperature;
+        if (currentMinTemperature < unit.minTemperature) unit.minTemperature = currentMinTemperature;
 
-        QJsonObject weather = item["weather"].toArray()[0].toObject();
+        if (dateTime.contains("12:00:00")) {
+            QJsonObject weatherObj = item["weather"].toArray()[0].toObject();
 
-        stats.condition = weather["main"].toString();
-    }
+            unit.condition = weatherObj["main"].toString();
+            unit.description = weatherObj["description"].toString();
 
-    QVariantList model;
+            const QDate _date = QDate::fromString(date, "yyyy-MM-dd");
 
-    auto mapConstIterator = map.constBegin();
-    bool isTomorrow = true;
+            if (isTomorrow) {
+                unit.week = "Tomorrow";
+                isTomorrow = false;
+            } else {
+                unit.week = _date.toString("ddd");
+            }
 
-    while (mapConstIterator != map.constEnd()) {
-        QVariantMap dayData;
-        QDate date = QDate::fromString(mapConstIterator.key(), "yyyy-MM-dd");
-
-        if (isTomorrow) {
-            dayData["week"] = "Tomorrow";
-            isTomorrow = false;
-        } else {
-            dayData["week"] = date.toString("ddd");
+            this->dailyForecastModel.append(unit);
         }
-
-        dayData["maxTemperature"] = mapConstIterator.value().maxTemperature;
-        dayData["minTemperature"] = mapConstIterator.value().minTemperature;
-        dayData["condition"] = mapConstIterator.value().condition;
-
-        model.append(dayData);
-        ++mapConstIterator;
     }
-
-    this->dailyForecastModel = model;
 }

@@ -2,10 +2,10 @@ pragma Singleton
 import QtQuick 2.15
 
 QtObject {
-    property int temperature: weatherProvider.temperature
-    property int maxTemperature: weatherProvider.maxTemperature
-    property int minTemperature: weatherProvider.minTemperature
-    property int feelsLike: weatherProvider.feelsLike
+    property real temperature: weatherProvider.temperature
+    property real maxTemperature: weatherProvider.maxTemperature
+    property real minTemperature: weatherProvider.minTemperature
+    property real feelsLike: weatherProvider.feelsLike
     property int humidity: weatherProvider.humidity
     property real windSpeed: weatherProvider.windSpeed
     property string windDirection: weatherProvider.windDirection

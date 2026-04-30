@@ -2,6 +2,8 @@ import QtQuick 2.15
 import QtQuick.Controls
 import QtQuick.Layouts
 import "../shared"
+import "../shared/utils/DataConverter.js" as DataConverter
+import "../shared/utils/DataPrettier.js" as DataPrettier
 
 Rectangle {
     id: root
@@ -46,9 +48,8 @@ Rectangle {
                     anchors.fill: parent
                     week: modelData.week
                     condition: modelData.condition
-                    bubbleColor: "red"
-                    maxTemperature: modelData.maxTemperature
-                    minTemperature: modelData.minTemperature
+                    maxTemperature:  DataPrettier.temperature((DataConverter.temperature(modelData.maxTemperature, settings.temperatureUnit)))
+                    minTemperature: DataPrettier.temperature((DataConverter.temperature(modelData.minTemperature, settings.temperatureUnit)))
                 }
             }
         }
