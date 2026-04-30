@@ -20,7 +20,6 @@ QtObject {
     property string description: weatherProvider.description
     property string sunrise: weatherProvider.sunrise
     property string sunset: weatherProvider.sunset
-    property string city: weatherProvider.city
     property var hourlyForecastModel: weatherProvider.hourlyForecastModel
     property var dailyForecastModel: weatherProvider.dailyForecastModel
     property string lastUpdatedTime: weatherProvider.lastFetchedTime

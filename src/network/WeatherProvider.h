@@ -6,6 +6,8 @@
 #include <QNetworkAccessManager>
 #include <QVariantList>
 
+#include "LocationProvider.h"
+
 struct HourlyForecastUnit final {
     Q_GADGET
 
@@ -68,7 +70,6 @@ class WeatherProvider final : public QObject
     Q_PROPERTY(QString uvLevel READ getUVLevel NOTIFY weatherDetailsDataChanged)
     Q_PROPERTY(QString sunrise READ getSunrise NOTIFY weatherDataChanged)
     Q_PROPERTY(QString sunset READ getSunset NOTIFY weatherDataChanged)
-    Q_PROPERTY(QString city READ getCity NOTIFY weatherDataChanged)
     Q_PROPERTY(HourlyForecastModel hourlyForecastModel READ getHourlyForecastModel NOTIFY forecastDataChanged)
     Q_PROPERTY(DailyForecastModel dailyForecastModel READ getDailyForecastModel NOTIFY forecastDataChanged)
     Q_PROPERTY(QString lastFetchedTime READ getLastFetchedTime NOTIFY weatherDataChanged)
@@ -97,7 +98,6 @@ public:
     QString getDescription() const;
     QString getSunrise() const;
     QString getSunset() const;
-    QString getCity() const;
     HourlyForecastModel getHourlyForecastModel() const;
     DailyForecastModel getDailyForecastModel() const;
     QString getLastFetchedTime() const;
@@ -109,6 +109,7 @@ public:
     Q_INVOKABLE void updateWeather();
 
 signals:
+    void coordinatesChanged();
     void weatherDataChanged();
     void forecastDataChanged();
     void weatherDetailsDataChanged();
@@ -117,10 +118,12 @@ signals:
     void weatherDetailsDataLoadingChanged();
 
 private slots:
-    void onResponse(QNetworkReply *reply);
+    void onWeatherFetched(QNetworkReply *reply);
+    void onCoordinatesFound(double latitude, double longitude);
 
 private:
     QNetworkAccessManager *manager;
+    LocationProvider *locationProvider;
 
     double temperature;
     double maxTemperature;
@@ -140,15 +143,17 @@ private:
     QString description;
     QString sunrise;
     QString sunset;
-    QString city;
     double latitude;
-    double longtitude;
+    double longitude;
     HourlyForecastModel hourlyForecastModel;
     DailyForecastModel dailyForecastModel;
     QString lastFetchedTime;
     bool weatherDataLoading;
     bool forecastDataLoading;
     bool weatherDetailsDataLoading;
+
+    QString getConditionFromWmo(int code);
+    QString getUVLevelFromIndex(int index);
 
     void setDefaultDataValues();
     void setWeatherDataLoading(bool newState);
@@ -157,14 +162,7 @@ private:
 
     void updateLastFetchedDateTime();
 
-    void extractMainInformationFromJson(const QJsonObject &json);
-    void extractSysInformationFromJson(const QJsonObject &json);
-    void extractRainInformationFromJson(const QJsonObject &json);
-    void extractOtherInformationFromJson(const QJsonObject &json);
-    void extractWindInformationFromJson(const QJsonObject &json);
-    void extractCloudInformationFromJson(const QJsonObject &json);
-    void extractCoordinateInformationFromJson(const QJsonObject &json);
-    void extractUVInformationFromJson(const QJsonObject &json);
+    void extractCurrentInformationFromJson(const QJsonObject &json);
     void extractHourlyForecastFromJson(const QJsonObject &json);
     void extractDailyForecastFromJson(const QJsonObject &json);
 };

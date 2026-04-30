@@ -78,20 +78,21 @@ qt_add_qml_module(appThisDay
         resources/icons/sidebar/sunrise.png
         resources/icons/sidebar/sunset.png
 
-        resources/icons/weather/Clear.png
+        "resources/icons/weather/Clear sky.png"
         resources/icons/weather/Clouds.png
+        "resources/icons/weather/Partly cloudy.png"
         resources/icons/weather/Drizzle.png
         resources/icons/weather/Thunder.png
         resources/icons/weather/Dust.png
-        resources/icons/weather/Fog.png
+        resources/icons/weather/Foggy.png
         resources/icons/weather/Hail.png
         resources/icons/weather/Haze.png
         resources/icons/weather/Mist.png
-        resources/icons/weather/Snow.png
+        resources/icons/weather/Snowy.png
         resources/icons/weather/Thunderstorm.png
         resources/icons/weather/Tornado.png
         resources/icons/weather/Wind.png
-        resources/icons/weather/Rain.png
+        resources/icons/weather/Rainy.png
 
         resources/icons/weather/details/cloudiness.png
         resources/icons/weather/details/dew.png
@@ -118,6 +119,7 @@ qt_add_qml_module(appThisDay
         SOURCES src/common/types/WeatherTypes.h
         QML_FILES qml/shared/utils/DataConverter.js
         QML_FILES qml/shared/utils/DataPrettier.js
+        QML_FILES qml/shared/LocationData.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

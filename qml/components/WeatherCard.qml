@@ -28,7 +28,13 @@ Rectangle {
             Text {
                 id: cityText
                 anchors.fill: parent
-                text: WeatherData.city
+                text: {
+                    if (LocationData.city !== LocationData.country)
+                        return LocationData.city + ", " + LocationData.country;
+                    else
+                        return LocationData.country;
+                }
+
                 font.pixelSize: parent.height * 0.7
                 font.bold: true
                 color: Theme.textColor
@@ -108,17 +114,17 @@ Rectangle {
         }
 
         Shimmer {
-            id: descriptionTextShimmer
+            id: conditionTextShimmer
             Layout.fillWidth: true
             Layout.preferredHeight: temperatureText.height * 0.35
             loading: WeatherData.weatherDataLoading
 
             Text {
-                id: descriptionText
+                id: conditionText
                 anchors.fill: parent
-                text: WeatherData.description.substring(0, 1).toUpperCase() + WeatherData.description.substring(1, WeatherData.description.length)
+                text: WeatherData.condition
                 color: Theme.subTextColor
-                font.pixelSize: height * 0.7
+                font.pixelSize: height * 0.6
                 font.weight: Font.DemiBold
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter

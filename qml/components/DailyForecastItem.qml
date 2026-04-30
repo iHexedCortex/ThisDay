@@ -87,7 +87,7 @@ Rectangle {
             Layout.fillWidth: true
             text: root.condition
             color: "white"
-            font.pixelSize: parent.width * 0.15
+            font.pixelSize: parent.width * 0.14
             font.bold: true
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter

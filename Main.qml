@@ -47,14 +47,13 @@ Window {
         }
     }
 
-    Component.onCompleted: {
-        locationProvider.detect();
-    }
+    Component.onCompleted: locationProvider.detectCity()
 
     Connections {
         target: locationProvider
 
-        function onLocationDetected(currentCity) {
+        function onCityDetected(currentCity) {
+            locationProvider.searchCity(currentCity);
             weatherProvider.fetchWeather(currentCity);
         }
     }

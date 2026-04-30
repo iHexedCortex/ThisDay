@@ -6,76 +6,65 @@
 #include <QNetworkRequest>
 #include <QJsonArray>
 
-#include "../config/SecretConfig.h"
-
 WeatherProvider::WeatherProvider(QObject *parent) : QObject{parent} {
     this->manager = new QNetworkAccessManager(this);
+    this->locationProvider = new LocationProvider(this);
+
     this->setDefaultDataValues();
-    this->connect(this->manager, &QNetworkAccessManager::finished, this, &WeatherProvider::onResponse);
+
+    this->connect(this->locationProvider, &LocationProvider::coordinatesFound, this, &WeatherProvider::onCoordinatesFound);
+    this->connect(this->manager, &QNetworkAccessManager::finished, this, &WeatherProvider::onWeatherFetched);
 }
 
 void WeatherProvider::fetchWeather(const QString &city) {
-    const QString API_KEY = SecretConfig::OPENWEATHER_API_KEY;
-
-    QUrl weatherUrl(QString("https://api.openweathermap.org/data/2.5/weather?q=%1&appid=%2&units=metric").arg(city, API_KEY));
-    this->manager->get(QNetworkRequest(weatherUrl));
-
-    QUrl forecastUrl(QString("https://api.openweathermap.org/data/2.5/forecast?q=%1&appid=%2&units=metric").arg(city, API_KEY));
-    this->manager->get(QNetworkRequest(forecastUrl));
-
-    this->city = city;
-
     this->setWeatherDataLoading(true);
     this->setWeatherDetailsDataLoading(true);
     this->setForecastDataLoading(true);
 
-    this->updateLastFetchedDateTime();
+    this->locationProvider->searchCity(city);
 }
 
 void WeatherProvider::updateWeather() {
-    this->fetchWeather(this->city);
+    this->fetchWeather(this->locationProvider->getCity());
 }
 
-void WeatherProvider::onResponse(QNetworkReply *reply) {
+void WeatherProvider::onWeatherFetched(QNetworkReply *reply) {
     if (reply->error() == QNetworkReply::NoError) {
-        QJsonDocument jsonDocument = QJsonDocument::fromJson(reply->readAll());
-        QJsonObject json = jsonDocument.object();
+        QJsonObject json = QJsonDocument::fromJson(reply->readAll()).object();
 
-        if (json.contains("list")) {
-            this->extractHourlyForecastFromJson(json);
-            this->extractDailyForecastFromJson(json);
+        this->extractCurrentInformationFromJson(json["current"].toObject());
+        this->extractHourlyForecastFromJson(json["hourly"].toObject());
+        this->extractDailyForecastFromJson(json["daily"].toObject());
 
-            emit this->forecastDataChanged();
-            this->setForecastDataLoading(false);
-        }
-        else if (json.contains("main")) {
-            this->extractMainInformationFromJson(json);
-            this->extractSysInformationFromJson(json);
-            this->extractCloudInformationFromJson(json);
-            this->extractWindInformationFromJson(json);
-            this->extractRainInformationFromJson(json);
-            this->extractCoordinateInformationFromJson(json);
-            this->extractOtherInformationFromJson(json);
+        emit this->weatherDataChanged();
+        emit this->forecastDataChanged();
+        emit this->weatherDetailsDataChanged();
 
-            emit this->weatherDataChanged();
-            this->setWeatherDataLoading(false);
-
-            const QString API_KEY = SecretConfig::OPENWEATHER_API_KEY;
-            QUrl uvUrl(QString("https://api.openweathermap.org/data/2.5/uvi?lat=%1&lon=%2&appid=%3")
-                           .arg(this->latitude).arg(this->longtitude).arg(API_KEY));
-            this->manager->get(QNetworkRequest(uvUrl));
-        }
-        else if (json.contains("value")) {
-            this->extractUVInformationFromJson(json);
-
-            emit this->weatherDetailsDataChanged();
-            this->setWeatherDetailsDataLoading(false);
-        }
+        this->setWeatherDataLoading(false);
+        this->setForecastDataLoading(false);
+        this->setWeatherDetailsDataLoading(false);
     } else {
-        qDebug() << "API Error:" << reply->errorString();
+        qDebug() << "Open-Meteo Error:" << reply->errorString();
     }
 
     reply->deleteLater();
+}
+
+void WeatherProvider::onCoordinatesFound(double latitude, double longitude) {
+    this->latitude = latitude;
+    this->longitude = longitude;
+
+    const QString url = QString(
+        "https://api.open-meteo.com/v1/forecast?"
+        "latitude=%1&longitude=%2"
+        "&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,cloud_cover,pressure_msl,surface_pressure,wind_speed_10m,wind_direction_10m"
+        "&hourly=temperature_2m,relative_humidity_2m,weather_code,visibility,dew_point_2m"
+        "&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max"
+        "&timezone=auto&forecast_days=7"
+    ).arg(this->latitude).arg(this->longitude);
+
+    this->manager->get(QNetworkRequest(QUrl(url)));
+    this->updateLastFetchedDateTime();
 }
 
 void WeatherProvider::setDefaultDataValues() {
@@ -101,9 +90,8 @@ void WeatherProvider::setDefaultDataValues() {
     this->condition = defaultStringValue;
     this->sunrise = defaultStringValue;
     this->sunset = defaultStringValue;
-    this->city = "Detecting...";
     this->latitude = defaultDoubleValue;
-    this->longtitude = defaultDoubleValue;
+    this->longitude = defaultDoubleValue;
     this->hourlyForecastModel = {};
     this->dailyForecastModel = {};
     this->lastFetchedTime = defaultStringValue;
@@ -184,10 +172,6 @@ QString WeatherProvider::getSunset() const {
     return this->sunset;
 }
 
-QString WeatherProvider::getCity() const {
-    return this->city;
-}
-
 HourlyForecastModel WeatherProvider::getHourlyForecastModel() const {
     return this->hourlyForecastModel;
 }
@@ -233,160 +217,106 @@ void WeatherProvider::updateLastFetchedDateTime() {
     this->lastFetchedTime = currentTime.toString("HH:mm");
 }
 
-void WeatherProvider::extractMainInformationFromJson(const QJsonObject &json) {
-    QJsonObject mainObj = json["main"].toObject();
+void WeatherProvider::extractCurrentInformationFromJson(const QJsonObject &json) {
+    this->temperature = json["temperature_2m"].toDouble();
+    this->feelsLike = json["apparent_temperature"].toDouble();
+    this->humidity = json["relative_humidity_2m"].toInt();
+    this->pressure = json["pressure_msl"].toInt();
+    this->windSpeed = json["wind_speed_10m"].toDouble();
+    this->cloudiness = json["cloud_cover"].toInt();
+    this->precipitation = json["precipitation"].toDouble();
 
-    this->temperature = mainObj["temp"].toDouble();
-    this->feelsLike = mainObj["feels_like"].toDouble();
-    this->humidity = mainObj["humidity"].toInt();
-    this->pressure = mainObj["pressure"].toInt();
-    this->dewPoint = this->temperature - ((100 - this->humidity) / 5.0);
-}
-
-void WeatherProvider::extractSysInformationFromJson(const QJsonObject &json) {
-    QJsonObject sysObj = json["sys"].toObject();
-
-    qint64 sunriseRaw = sysObj["sunrise"].toVariant().toLongLong();
-    qint64 sunsetRaw = sysObj["sunset"].toVariant().toLongLong();
-
-    this->sunrise = QDateTime::fromSecsSinceEpoch(sunriseRaw).toString("hh:mm");
-    this->sunset = QDateTime::fromSecsSinceEpoch(sunsetRaw).toString("hh:mm");
-}
-
-void WeatherProvider::extractRainInformationFromJson(const QJsonObject &json) {
-    QJsonObject rainObj = json["rain"].toObject();
-
-    this->precipitation = rainObj["3h"].toDouble();
-}
-
-void WeatherProvider::extractWindInformationFromJson(const QJsonObject &json) {
-    QJsonObject windObj = json["wind"].toObject();
-
-    this->windSpeed = windObj["speed"].toDouble();
-
-    const int degrees = windObj["deg"].toInt();
+    const int degrees = json["wind_direction_10m"].toInt();
     static const QStringList sectors = { "N", "NE", "E", "SE", "S", "SW", "W", "NW" };
-    int sectorIndex = static_cast<int>((degrees + 22.5) / 45.0) % sectors.length();
-    this->windDirection = sectors[sectorIndex];
-}
+    this->windDirection = sectors[static_cast<int>((degrees + 22.5) / 45.0) % 8];
 
-void WeatherProvider::extractCoordinateInformationFromJson(const QJsonObject &json) {
-    QJsonObject coordObj = json["coord"].toObject();
-
-    this->latitude = coordObj["lat"].toDouble();
-    this->longtitude = coordObj["lon"].toDouble();
-}
-
-void WeatherProvider::extractCloudInformationFromJson(const QJsonObject &json) {
-    QJsonObject cloudObj = json["clouds"].toObject();
-
-    this->cloudiness = cloudObj["all"].toInt();
-}
-
-void WeatherProvider::extractUVInformationFromJson(const QJsonObject &json) {
-    this->uvIndex = qRound(json["value"].toDouble());
-
-    if (this->uvIndex < 3) this->uvLevel = "Low";
-    else if (this->uvIndex < 6) this->uvLevel = "Moderate";
-    else if (this->uvIndex < 8) this->uvLevel = "High";
-    else if (this->uvIndex < 11) this->uvLevel = "Very High";
-    else this->uvLevel = "Extreme";
-}
-
-void WeatherProvider::extractOtherInformationFromJson(const QJsonObject &json) {
-    this->visibility = json["visibility"].toDouble() / 1000.0;
-
-    QJsonArray weatherArray = json["weather"].toArray();
-    if (!weatherArray.isEmpty()) {
-        QJsonObject weatherObj = weatherArray[0].toObject();
-        this->condition = weatherObj["main"].toString();
-        this->description = weatherObj["description"].toString();
-    }
+    this->condition = this->getConditionFromWmo(json["weather_code"].toInt());
 }
 
 void WeatherProvider::extractHourlyForecastFromJson(const QJsonObject &json) {
-    QJsonArray list = json["list"].toArray();
+    QJsonArray times = json["time"].toArray();
+    QJsonArray temps = json["temperature_2m"].toArray();
+    QJsonArray humidities = json["relative_humidity_2m"].toArray();
+    QJsonArray codes = json["weather_code"].toArray();
+    QJsonArray visibilities = json["visibility"].toArray();
+    QJsonArray dewPoints = json["dew_point_2m"].toArray();
 
     this->hourlyForecastModel.clear();
 
-    double dailyHigh = -999;
-    double dailyLow = 999;
-
-    for (int i = 2; i < 10; i++) {
-        QJsonObject item = list[i].toObject();
-        QJsonObject mainObj = item["main"].toObject();
-
+    for (int i = 0; i < 24; ++i) {
         HourlyForecastUnit unit;
-
-        QString dateTime = item["dt_txt"].toString();
-        QString time = dateTime.split(" ")[1].left(5);
-
-        unit.time = time;
-        unit.temperature = mainObj["temp"].toDouble();
-        unit.humidity = mainObj["humidity"].toInt();
-
-        QJsonArray weatherArray = item["weather"].toArray();
-        if (!weatherArray.isEmpty()) {
-            QJsonObject weatherObj = weatherArray[0].toObject();
-
-            unit.condition = weatherObj["main"].toString();
-        }
+        unit.time = QDateTime::fromString(times[i].toString(), Qt::ISODate).toString("HH:mm");
+        unit.temperature = temps[i].toDouble();
+        unit.humidity = humidities[i].toInt();
+        unit.condition = this->getConditionFromWmo(codes[i].toInt());
 
         this->hourlyForecastModel.append(unit);
 
-        const double temperature = mainObj["temp"].toDouble();
-        if (temperature > dailyHigh)
-            dailyHigh = temperature;
-        if (temperature < dailyLow)
-            dailyLow = temperature;
+        if (i == 0) {
+            this->visibility = visibilities[i].toDouble() / 1000.0;
+            this->dewPoint = dewPoints[i].toDouble();
+        }
     }
-
-    this->maxTemperature = dailyHigh;
-    this->minTemperature = dailyLow;
 }
 
 void WeatherProvider::extractDailyForecastFromJson(const QJsonObject &json) {
-    QJsonArray list = json["list"].toArray();
+    QJsonArray times = json["time"].toArray();
+    QJsonArray maxTemps = json["temperature_2m_max"].toArray();
+    QJsonArray minTemps = json["temperature_2m_min"].toArray();
+    QJsonArray codes = json["weather_code"].toArray();
+    QJsonArray uvIndices = json["uv_index_max"].toArray();
+    QJsonArray sunrises = json["sunrise"].toArray();
+    QJsonArray sunsets = json["sunset"].toArray();
 
     this->dailyForecastModel.clear();
 
-    DailyForecastUnit unit;
+    for (int i = 0; i < times.size(); ++i) {
+        DailyForecastUnit unit;
+        QDate date = QDate::fromString(times[i].toString(), "yyyy-MM-dd");
 
-    const QString currentDate = QDate::currentDate().toString("yyyy-MM-dd");
-    bool isTomorrow = true;
+        if (date == QDate::currentDate()) {
+            unit.week = "Today";
 
-    for (const QJsonValue &value : list) {
-        QJsonObject item = value.toObject();
-
-        const QString dateTime = item["dt_txt"].toString();
-        const QString date = dateTime.split(" ")[0];
-
-        if (date == currentDate) continue;
-
-        QJsonObject mainObj = item["main"].toObject();
-
-        double currentMaxTemperature = mainObj["temp_max"].toDouble();
-        double currentMinTemperature = mainObj["temp_min"].toDouble();
-
-        if (currentMaxTemperature > unit.maxTemperature) unit.maxTemperature = currentMaxTemperature;
-        if (currentMinTemperature < unit.minTemperature) unit.minTemperature = currentMinTemperature;
-
-        if (dateTime.contains("12:00:00")) {
-            QJsonObject weatherObj = item["weather"].toArray()[0].toObject();
-
-            unit.condition = weatherObj["main"].toString();
-            unit.description = weatherObj["description"].toString();
-
-            const QDate _date = QDate::fromString(date, "yyyy-MM-dd");
-
-            if (isTomorrow) {
-                unit.week = "Tomorrow";
-                isTomorrow = false;
-            } else {
-                unit.week = _date.toString("dddd");
-            }
-
-            this->dailyForecastModel.append(unit);
+            this->maxTemperature = maxTemps[i].toDouble();
+            this->minTemperature = minTemps[i].toDouble();
+            this->uvIndex = qRound(uvIndices[i].toDouble());
+            this->uvLevel = this->getUVLevelFromIndex(this->uvIndex);
+            this->sunrise = QDateTime::fromString(sunrises[i].toString(), Qt::ISODate).toString("HH:mm");
+            this->sunset = QDateTime::fromString(sunsets[i].toString(), Qt::ISODate).toString("HH:mm");
         }
+        else if (date == QDate::currentDate().addDays(1)) unit.week = "Tomorrow";
+        else unit.week = date.toString("dddd");
+
+        unit.maxTemperature = maxTemps[i].toDouble();
+        unit.minTemperature = minTemps[i].toDouble();
+        unit.condition = this->getConditionFromWmo(codes[i].toInt());
+
+        this->dailyForecastModel.append(unit);
     }
+}
+
+QString WeatherProvider::getConditionFromWmo(int code) {
+    switch (code) {
+        case 0: return "Clear sky";
+        case 1: case 2: return "Partly cloudy";
+        case 3: return "Clouds";
+        case 45: return (this->visibility > 1.0) ? "Mist" : "Foggy";
+        case 48: return "Foggy";
+        case 51: case 53: case 55: return "Drizzle";
+        case 61: case 63: case 65: return "Rainy";
+        case 66: case 67: return "Hail";
+        case 71: case 73: case 75: return "Snowy";
+        case 80: case 81: case 82: return "Rainy";
+        case 95: return "Thunder";
+        case 96: case 99: return "Thunderstorm";
+        default: return "Clear sky";
+    }
+}
+
+QString WeatherProvider::getUVLevelFromIndex(int index) {
+    if (index < 3) return "Low";
+    if (index < 6) return "Moderate";
+    if (index < 8) return "High";
+    if (index < 11) return "Very High";
+    return "Extreme";
 }

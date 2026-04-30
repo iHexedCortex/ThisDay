@@ -1,4 +1,5 @@
 singleton Theme 1.0 Theme.qml
 singleton Directory 1.0 Directory.qml
 singleton WeatherData 1.0 WeatherData.qml
+singleton LocationData 1.0 LocationData.qml
 singleton Clock 1.0 Clock.qml

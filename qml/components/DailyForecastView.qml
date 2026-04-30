@@ -41,7 +41,7 @@ Rectangle {
             model: WeatherData.dailyForecastModel
 
             delegate: Item {
-                width: window.width * 0.07
+                width: window.width * 0.075
                 height: dailyForecastListView.height
 
                 DailyForecastItem {

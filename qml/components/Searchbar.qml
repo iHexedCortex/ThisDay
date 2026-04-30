@@ -16,7 +16,7 @@ Rectangle {
     RowLayout {
         id: mainLayout
         anchors.fill: root
-        anchors.leftMargin: width * 0.04
+        anchors.leftMargin: width * 0.02
         anchors.rightMargin: anchors.leftMargin
         spacing: 10
 
@@ -32,9 +32,7 @@ Rectangle {
                 anchors.fill: searchImage
                 cursorShape: Qt.PointingHandCursor
 
-                onClicked: {
-                    searchTextField.accepted();
-                }
+                onClicked: searchTextField.accepted()
             }
         }
 
@@ -50,11 +48,9 @@ Rectangle {
             font.pixelSize: root.height * 0.4
             verticalAlignment: TextInput.AlignVCenter
 
-            onTextChanged: {
-                font.bold = text.length > 0;
-            }
-
+            onTextChanged: font.bold = text.length > 0
             onAccepted: {
+                locationProvider.searchCity(text);
                 weatherProvider.fetchWeather(text);
             }
         }
