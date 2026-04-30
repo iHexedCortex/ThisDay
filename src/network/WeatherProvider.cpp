@@ -243,7 +243,11 @@ void WeatherProvider::extractHourlyForecastFromJson(const QJsonObject &json) {
 
     this->hourlyForecastModel.clear();
 
-    for (int i = 0; i < 24; ++i) {
+    const int currentHour = QDateTime::currentDateTime().time().hour();
+    const int pastHours = currentHour + 1;
+    const int next24HoursFromCurrentHour = pastHours + 24;
+
+    for (int i = pastHours; i < next24HoursFromCurrentHour; ++i) {
         HourlyForecastUnit unit;
         unit.time = QDateTime::fromString(times[i].toString(), Qt::ISODate).toString("HH:mm");
         unit.temperature = temps[i].toDouble();
@@ -270,22 +274,21 @@ void WeatherProvider::extractDailyForecastFromJson(const QJsonObject &json) {
 
     this->dailyForecastModel.clear();
 
-    for (int i = 0; i < times.size(); ++i) {
+    for (int i = 1; i < times.size(); ++i) {
         DailyForecastUnit unit;
         QDate date = QDate::fromString(times[i].toString(), "yyyy-MM-dd");
 
-        if (date == QDate::currentDate()) {
-            unit.week = "Today";
+        this->maxTemperature = maxTemps[i].toDouble();
+        this->minTemperature = minTemps[i].toDouble();
+        this->uvIndex = qRound(uvIndices[i].toDouble());
+        this->uvLevel = this->getUVLevelFromIndex(this->uvIndex);
+        this->sunrise = QDateTime::fromString(sunrises[i].toString(), Qt::ISODate).toString("HH:mm");
+        this->sunset = QDateTime::fromString(sunsets[i].toString(), Qt::ISODate).toString("HH:mm");
 
-            this->maxTemperature = maxTemps[i].toDouble();
-            this->minTemperature = minTemps[i].toDouble();
-            this->uvIndex = qRound(uvIndices[i].toDouble());
-            this->uvLevel = this->getUVLevelFromIndex(this->uvIndex);
-            this->sunrise = QDateTime::fromString(sunrises[i].toString(), Qt::ISODate).toString("HH:mm");
-            this->sunset = QDateTime::fromString(sunsets[i].toString(), Qt::ISODate).toString("HH:mm");
-        }
-        else if (date == QDate::currentDate().addDays(1)) unit.week = "Tomorrow";
-        else unit.week = date.toString("dddd");
+        if (date == QDate::currentDate().addDays(1))
+            unit.week = "Tomorrow";
+        else
+            unit.week = date.toString("dddd");
 
         unit.maxTemperature = maxTemps[i].toDouble();
         unit.minTemperature = minTemps[i].toDouble();
