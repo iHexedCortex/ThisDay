@@ -245,7 +245,7 @@ void WeatherProvider::extractHourlyForecastFromJson(const QJsonObject &json) {
 
     const int currentHour = QDateTime::currentDateTime().time().hour();
 
-    for (int i = currentHour; i < currentHour + 24; ++i) {
+    for (int i = currentHour; i < currentHour + 25; ++i) {
         if (i == currentHour) {
             this->visibility = visibilities[i].toDouble() / 1000.0;
             this->dewPoint = dewPoints[i].toDouble();
