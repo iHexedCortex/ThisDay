@@ -113,7 +113,7 @@ qt_add_qml_module(appThisDay
         src/network/WeatherProvider.h src/network/WeatherProvider.cpp
         src/network/LocationProvider.h src/network/LocationProvider.cpp
     
-        src/config/SecretConfig.h
+
         SOURCES src/settings/SettingsManager.h src/settings/SettingsManager.cpp
         SOURCES src/settings/DefaultSettings.h
         SOURCES src/common/types/WeatherTypes.h
