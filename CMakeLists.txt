@@ -29,7 +29,7 @@ qt_add_qml_module(appThisDay
         qml/components/SidebarStatItem.qml
         qml/components/WeatherCard.qml
         qml/components/Toolbar.qml
-        qml/components/DetectLocationButton.qml
+
         qml/components/HourlyForecastItem.qml
         qml/components/HourlyForecastView.qml
         qml/components/DailyForecastItem.qml
