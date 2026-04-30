@@ -383,7 +383,7 @@ void WeatherProvider::extractDailyForecastFromJson(const QJsonObject &json) {
                 unit.week = "Tomorrow";
                 isTomorrow = false;
             } else {
-                unit.week = _date.toString("ddd");
+                unit.week = _date.toString("dddd");
             }
 
             this->dailyForecastModel.append(unit);
