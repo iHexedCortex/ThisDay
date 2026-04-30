@@ -13,19 +13,23 @@ Rectangle {
     GridLayout {
         id: mainLayout
         anchors.fill: parent
-        columns: 2
+        columns: 3
         rowSpacing: 0
         columnSpacing: 0
 
         WeatherDetailsItem {
             id: windItem
-            Layout.preferredWidth: root.width * 0.4
+            Layout.preferredWidth: root.width * 0.48
             Layout.preferredHeight: Layout.preferredWidth * 0.35
             icon:  Directory.weatherDetailsIcons + "wind.png"
             label: "Wind"
             value: WeatherData.windSpeed
             unit: "m/s"
             extra: WeatherData.windDirection
+        }
+
+        Item {
+            Layout.fillWidth: true
         }
 
         WeatherDetailsItem {
@@ -48,6 +52,10 @@ Rectangle {
             unit: "%"
         }
 
+        Item {
+            Layout.fillWidth: true
+        }
+
         WeatherDetailsItem {
             id: visibilityItem
             Layout.preferredWidth: windItem.width
@@ -68,6 +76,10 @@ Rectangle {
             unit: "hPa"
         }
 
+        Item {
+            Layout.fillWidth: true
+        }
+
         WeatherDetailsItem {
             id: uvLevelItem
             Layout.preferredWidth: windItem.width
@@ -86,6 +98,10 @@ Rectangle {
             label: "Dew Point"
             value: DataPrettier.dewPoint((DataConverter.temperature(WeatherData.dewPoint, settings.temperatureUnit)))
             unit: "°"
+        }
+
+        Item {
+            Layout.fillWidth: true
         }
 
         WeatherDetailsItem {

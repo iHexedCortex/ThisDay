@@ -244,10 +244,15 @@ void WeatherProvider::extractHourlyForecastFromJson(const QJsonObject &json) {
     this->hourlyForecastModel.clear();
 
     const int currentHour = QDateTime::currentDateTime().time().hour();
-    const int pastHours = currentHour + 1;
-    const int next24HoursFromCurrentHour = pastHours + 24;
 
-    for (int i = pastHours; i < next24HoursFromCurrentHour; ++i) {
+    for (int i = currentHour; i < currentHour + 24; ++i) {
+        if (i == currentHour) {
+            this->visibility = visibilities[i].toDouble() / 1000.0;
+            this->dewPoint = dewPoints[i].toDouble();
+
+            continue;
+        }
+
         HourlyForecastUnit unit;
         unit.time = QDateTime::fromString(times[i].toString(), Qt::ISODate).toString("HH:mm");
         unit.temperature = temps[i].toDouble();
@@ -255,11 +260,6 @@ void WeatherProvider::extractHourlyForecastFromJson(const QJsonObject &json) {
         unit.condition = this->getConditionFromWmo(codes[i].toInt());
 
         this->hourlyForecastModel.append(unit);
-
-        if (i == 0) {
-            this->visibility = visibilities[i].toDouble() / 1000.0;
-            this->dewPoint = dewPoints[i].toDouble();
-        }
     }
 }
 
