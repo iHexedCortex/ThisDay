@@ -12,6 +12,8 @@ int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
     app.setWindowIcon(QIcon(":/resources/icons/app/icon.ico"));
+    app.setOrganizationName("iHexedCortexSoftware");
+    app.setApplicationName("ThisDay");
 
     QQmlApplicationEngine engine;
 
