@@ -50,13 +50,17 @@
 ### 🧩 Perceived Performance (Skeleton State)
 To eliminate "blank screen fatigue," ThisDay utilizes a custom **Skeleton Loading System**.
 <p align="center">
-  <img src="screenshots/dark_mode_today_page_skeleton.png" width="45%" alt="Skeleton Dark">
-  <img src="screenshots/light_mode_today_page_skeleton.png" width="45%" alt="Skeleton Light">
+  <img src="screenshots/dark_mode_today_page_skeleton.png" width="45%" alt="Dark Mode Today Page Skeleton">
+  <img src="screenshots/light_mode_today_page_skeleton.png" width="45%" alt="Light Mode Today Page Skeleton">
 </p>
 
 ### 🌓 Dual-Theme Ecosystem
 * **System Core (Dark)**: Optimized for "Cyber-Noir" desktop setups with deep contrast and neon accents.
 * **Solar-Optimized (Light)**: High-legibility mode designed for high-glare environments.
+<p align="center">
+  <img src="screenshots/dark_mode_today_page.jpg" width="45%" alt="Dark Mode Today Page">
+  <img src="screenshots/light_mode_today_page.jpg" width="45%" alt="Light Mode Today Page">
+</p>
 
 <br />
 
