@@ -8,24 +8,35 @@
 
 WeatherProvider::WeatherProvider(QObject *parent) : QObject{parent} {
     this->manager = new QNetworkAccessManager(this);
-    this->locationProvider = new LocationProvider(this);
 
     this->setDefaultDataValues();
 
-    this->connect(this->locationProvider, &LocationProvider::coordinatesFound, this, &WeatherProvider::onCoordinatesFound);
     this->connect(this->manager, &QNetworkAccessManager::finished, this, &WeatherProvider::onWeatherFetched);
 }
 
-void WeatherProvider::fetchWeather(const QString &city) {
+void WeatherProvider::fetchWeather(double latitude, double longitude) {
     this->setWeatherDataLoading(true);
     this->setWeatherDetailsDataLoading(true);
     this->setForecastDataLoading(true);
 
-    this->locationProvider->searchCity(city);
+    this->latitude = latitude;
+    this->longitude = longitude;
+
+    const QString url = QString(
+        "https://api.open-meteo.com/v1/forecast?"
+        "latitude=%1&longitude=%2"
+        "&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,cloud_cover,pressure_msl,surface_pressure,wind_speed_10m,wind_direction_10m"
+        "&hourly=temperature_2m,relative_humidity_2m,weather_code,visibility,dew_point_2m"
+        "&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max"
+        "&timezone=auto&forecast_days=7"
+    ).arg(this->latitude).arg(this->longitude);
+
+    this->manager->get(QNetworkRequest(QUrl(url)));
+    this->updateLastFetchedDateTime();
 }
 
 void WeatherProvider::updateWeather() {
-    this->fetchWeather(this->locationProvider->getCity());
+    this->fetchWeather(this->latitude, this->longitude);
 }
 
 void WeatherProvider::onWeatherFetched(QNetworkReply *reply) {
@@ -48,23 +59,6 @@ void WeatherProvider::onWeatherFetched(QNetworkReply *reply) {
     }
 
     reply->deleteLater();
-}
-
-void WeatherProvider::onCoordinatesFound(double latitude, double longitude) {
-    this->latitude = latitude;
-    this->longitude = longitude;
-
-    const QString url = QString(
-        "https://api.open-meteo.com/v1/forecast?"
-        "latitude=%1&longitude=%2"
-        "&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,cloud_cover,pressure_msl,surface_pressure,wind_speed_10m,wind_direction_10m"
-        "&hourly=temperature_2m,relative_humidity_2m,weather_code,visibility,dew_point_2m"
-        "&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max"
-        "&timezone=auto&forecast_days=7"
-    ).arg(this->latitude).arg(this->longitude);
-
-    this->manager->get(QNetworkRequest(QUrl(url)));
-    this->updateLastFetchedDateTime();
 }
 
 void WeatherProvider::setDefaultDataValues() {

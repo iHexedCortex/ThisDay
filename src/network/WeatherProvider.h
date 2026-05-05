@@ -6,8 +6,6 @@
 #include <QNetworkAccessManager>
 #include <QVariantList>
 
-#include "LocationProvider.h"
-
 struct HourlyForecastUnit final {
     Q_GADGET
 
@@ -95,11 +93,10 @@ class WeatherProvider final : public QObject
 public:
     explicit WeatherProvider(QObject *parent = nullptr);
 
-    Q_INVOKABLE void fetchWeather(const QString &city);
+    Q_INVOKABLE void fetchWeather(double latitude, double longitude);
     Q_INVOKABLE void updateWeather();
 
 signals:
-    void coordinatesChanged();
     void weatherDataChanged();
     void forecastDataChanged();
     void weatherDetailsDataChanged();
@@ -109,11 +106,9 @@ signals:
 
 private slots:
     void onWeatherFetched(QNetworkReply *reply);
-    void onCoordinatesFound(double latitude, double longitude);
 
 private:
     QNetworkAccessManager *manager;
-    LocationProvider *locationProvider;
 
     double temperature;
     double maxTemperature;

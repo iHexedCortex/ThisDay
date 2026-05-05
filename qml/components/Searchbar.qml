@@ -49,9 +49,18 @@ Rectangle {
             verticalAlignment: TextInput.AlignVCenter
 
             onTextChanged: font.bold = text.length > 0
-            onAccepted: {
-                locationProvider.searchCity(text);
-                weatherProvider.fetchWeather(text);
+            onAccepted: locationProvider.searchCity(text)
+
+            Connections {
+                target: locationProvider
+
+                function onCityDetected(currentCity) {
+                    locationProvider.searchCity(currentCity);
+                }
+
+                function onCoordinatesFound(latitude, longitude) {
+                    weatherProvider.fetchWeather(latitude, longitude);
+                }
             }
         }
 

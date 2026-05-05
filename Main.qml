@@ -54,7 +54,10 @@ Window {
 
         function onCityDetected(currentCity) {
             locationProvider.searchCity(currentCity);
-            weatherProvider.fetchWeather(currentCity);
+        }
+
+        function onCoordinatesFound(latitude, longitude) {
+            weatherProvider.fetchWeather(latitude, longitude);
         }
     }
 }
