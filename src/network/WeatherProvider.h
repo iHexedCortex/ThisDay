@@ -140,7 +140,6 @@ private:
     QString getConditionFromWmo(int code);
     QString getUVLevelFromIndex(int index);
 
-    void setDefaultDataValues();
     void setWeatherDataLoading(bool newState);
     void setForecastDataLoading(bool newState);
     void setWeatherDetailsDataLoading(bool newState);

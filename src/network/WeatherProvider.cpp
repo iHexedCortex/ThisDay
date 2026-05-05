@@ -9,8 +9,6 @@
 WeatherProvider::WeatherProvider(QObject *parent) : QObject{parent} {
     this->manager = new QNetworkAccessManager(this);
 
-    this->setDefaultDataValues();
-
     this->connect(this->manager, &QNetworkAccessManager::finished, this, &WeatherProvider::onWeatherFetched);
 }
 
@@ -59,39 +57,6 @@ void WeatherProvider::onWeatherFetched(QNetworkReply *reply) {
     }
 
     reply->deleteLater();
-}
-
-void WeatherProvider::setDefaultDataValues() {
-    static const int defaultIntValue = -999;
-    static const double defaultDoubleValue = -999.0;
-    static const QString defaultStringValue = "Loading...";
-    static const bool defaultLoadingValue = false;
-
-    this->temperature = defaultDoubleValue;
-    this->maxTemperature = defaultDoubleValue;
-    this->minTemperature = defaultDoubleValue;
-    this->feelsLike = defaultDoubleValue;
-    this->humidity = defaultIntValue;
-    this->windSpeed = defaultDoubleValue;
-    this->windDirection = "--";
-    this->pressure = defaultIntValue;
-    this->cloudiness = defaultIntValue;
-    this->visibility = defaultDoubleValue;
-    this->dewPoint = defaultDoubleValue;
-    this->precipitation = defaultDoubleValue;
-    this->uvLevel = defaultStringValue;
-    this->uvIndex = defaultIntValue;
-    this->condition = defaultStringValue;
-    this->sunrise = defaultStringValue;
-    this->sunset = defaultStringValue;
-    this->latitude = defaultDoubleValue;
-    this->longitude = defaultDoubleValue;
-    this->hourlyForecastModel = {};
-    this->dailyForecastModel = {};
-    this->lastFetchedTime = defaultStringValue;
-    this->weatherDataLoading = defaultLoadingValue;
-    this->forecastDataLoading = defaultLoadingValue;
-    this->weatherDetailsDataLoading = defaultLoadingValue;
 }
 
 void WeatherProvider::setWeatherDataLoading(bool newState) {
