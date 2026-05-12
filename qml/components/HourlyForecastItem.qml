@@ -14,10 +14,10 @@ Rectangle {
         GradientStop { position: 1.0; color: Qt.darker(Theme.primaryColor, 2) }
     }
 
-    required property string hour;
-    required property string condition;
-    required property real temperature;
-    required property int humidity;
+    required property string hour
+    required property string temperature
+    required property string humidity
+    required property string icon
 
     function humidityLevel(humidity) {
         if (humidity < 35) return "low";
@@ -44,7 +44,7 @@ Rectangle {
 
         Image {
             id: weatherIconImage
-            source: Directory.weatherIcons + root.condition + ".png"
+            source: Directory.weatherIcons + root.icon + ".png"
             Layout.preferredWidth: root.height * 0.32
             Layout.preferredHeight: Layout.preferredWidth
             Layout.alignment: Qt.AlignHCenter
@@ -54,7 +54,7 @@ Rectangle {
 
         Text {
             id: temperatureText
-            text: root.temperature + "°"
+            text: root.temperature
             color: "white"
             font.pixelSize: hourText.font.pixelSize * 2.2
             font.bold: true
@@ -77,7 +77,7 @@ Rectangle {
 
             Text {
                 id: humidityText
-                text: root.humidity + "%"
+                text: root.humidity
                 color: "white"
                 font.pixelSize: hourText.font.pixelSize * 1.1
                 font.bold: true

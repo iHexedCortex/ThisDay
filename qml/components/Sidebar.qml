@@ -141,7 +141,7 @@ Rectangle {
                 Layout.preferredHeight: todayButton.height * 1.5
                 icon: Directory.sidebarIcons + "sunrise.png"
                 label: "Sunrise"
-                value: WeatherData.sunrise
+                value: weatherModel.astronomy.sunrise
                 visible: root.expanded
             }
 
@@ -151,7 +151,7 @@ Rectangle {
                 Layout.preferredHeight: sunriseStatItem.height
                 icon: Directory.sidebarIcons + "sunset.png"
                 label: "Sunset"
-                value: WeatherData.sunset
+                value: weatherModel.astronomy.sunset
                 visible: root.expanded
             }
         }
@@ -166,7 +166,7 @@ Rectangle {
             Layout.preferredHeight: sunriseStatItem.height
             icon: Directory.sidebarIcons + "reload.png"
             label: "Last updated"
-            value: "Today" + " • " + WeatherData.lastUpdatedTime
+            value: "Today" + " • " + WeatherData.fetchedAt
             rotatableImage: true
             visible: root.expanded
 

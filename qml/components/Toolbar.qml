@@ -13,9 +13,9 @@ Rectangle {
 
         Searchbar {
             id: searchbar
-            Layout.preferredWidth: window.width * 0.5
-            Layout.preferredHeight: window.width * 0.03
-            Layout.leftMargin: window.width * 0.1
+            Layout.preferredWidth: root.width * 0.7
+            Layout.preferredHeight: root.height
+            Layout.leftMargin: root.width * 0.1
         }
 
         Item {

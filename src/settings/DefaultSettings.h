@@ -1,11 +1,12 @@
 #ifndef DEFAULTSETTINGS_H
 #define DEFAULTSETTINGS_H
 
-#include "../common/types/WeatherTypes.h"
+#include "../common/types/WeatherUnits.h"
 
 namespace DefaultSettings {
-    inline constexpr WeatherTypes::TemperatureUnit TEMPERATURE_UNIT = WeatherTypes::TemperatureUnit::Celsius;
-    inline constexpr WeatherTypes::RefreshRate REFRESH_RATE = WeatherTypes::RefreshRate::min60;
+    inline constexpr TemperatureUnit TEMPERATURE_UNIT = TemperatureUnit::Celsius;
+    inline constexpr WindSpeedUnit WIND_SPEED_UNIT = WindSpeedUnit::MS;
+    inline constexpr PrecipitationUnit PRECIPITATION_UNIT = PrecipitationUnit::MM;
 }
 
 #endif // DEFAULTSETTINGS_H

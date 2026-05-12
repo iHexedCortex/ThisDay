@@ -28,7 +28,7 @@ Rectangle {
             fillMode: Image.PreserveAspectFit
 
             RotationAnimation on rotation {
-                running: WeatherData.weatherDataLoading && root.rotatableImage
+                running: false
                 from: 0
                 to: 360
                 duration: 1000
@@ -54,7 +54,7 @@ Rectangle {
                 id: valueTextShimmer
                 Layout.preferredWidth: root.width * 0.7
                 Layout.preferredHeight: root.height * 0.45
-                loading: WeatherData.weatherDataLoading
+                loading: weatherProvider.isAstronomyLoading
 
                 Text {
                     id: valueText

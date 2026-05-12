@@ -2,9 +2,6 @@ import QtQuick 2.15
 import QtQuick.Layouts
 import QtQuick.Controls
 import "../shared"
-import "../shared/utils/DataConverter.js" as DataConverter
-import "../shared/utils/DataPrettier.js" as DataPrettier
-import Weather.Types 1.0
 
 Rectangle {
     id: root
@@ -23,9 +20,8 @@ Rectangle {
             Layout.preferredHeight: Layout.preferredWidth * 0.35
             icon:  Directory.weatherDetailsIcons + "wind.png"
             label: "Wind"
-            value: WeatherData.windSpeed
-            unit: "m/s"
-            extra: WeatherData.windDirection
+            value: weatherModel.metrics.windSpeed
+            extra: weatherModel.metrics.windDirection
         }
 
         Item {
@@ -38,8 +34,7 @@ Rectangle {
             Layout.preferredHeight: windItem.height
             icon:  Directory.weatherDetailsIcons + "precipitation.png"
             label: "Precipitation"
-            value: WeatherData.precipitation
-            unit: "mm"
+            value: weatherModel.metrics.precipitation
         }
 
         WeatherDetailsItem {
@@ -48,8 +43,7 @@ Rectangle {
             Layout.preferredHeight: windItem.height
             icon:  Directory.weatherDetailsIcons + "humidity.png"
             label: "Humidity"
-            value: WeatherData.humidity
-            unit: "%"
+            value: weatherModel.metrics.humidity
         }
 
         Item {
@@ -62,8 +56,7 @@ Rectangle {
             Layout.preferredHeight: windItem.height
             icon:  Directory.weatherDetailsIcons + "visibility.png"
             label: "Visibility"
-            value: WeatherData.visibility
-            unit: "km"
+            value: weatherModel.metrics.visibility
         }
 
         WeatherDetailsItem {
@@ -72,8 +65,7 @@ Rectangle {
             Layout.preferredHeight: windItem.height
             icon:  Directory.weatherDetailsIcons + "pressure.png"
             label: "Pressure"
-            value: WeatherData.pressure
-            unit: "hPa"
+            value: weatherModel.metrics.pressure
         }
 
         Item {
@@ -86,8 +78,8 @@ Rectangle {
             Layout.preferredHeight: windItem.height
             icon:  Directory.weatherDetailsIcons + "uv.png"
             label: "UV Level"
-            value: WeatherData.uvLevel
-            level: WeatherData.uvIndex
+            value: weatherModel.metrics.uvLevel
+            extra: weatherModel.metrics.uvIndex
         }
 
         WeatherDetailsItem {
@@ -96,8 +88,7 @@ Rectangle {
             Layout.preferredHeight: windItem.height
             icon:  Directory.weatherDetailsIcons + "dew.png"
             label: "Dew Point"
-            value: DataPrettier.dewPoint((DataConverter.temperature(WeatherData.dewPoint, settings.temperatureUnit)))
-            unit: "°"
+            value: weatherModel.metrics.dewPoint
         }
 
         Item {
@@ -110,8 +101,7 @@ Rectangle {
             Layout.preferredHeight: windItem.height
             icon:  Directory.weatherDetailsIcons + "cloudiness.png"
             label: "Cloudiness"
-            value: WeatherData.cloudiness
-            unit: "%"
+            value: weatherModel.metrics.cloudiness
         }
     }
 }

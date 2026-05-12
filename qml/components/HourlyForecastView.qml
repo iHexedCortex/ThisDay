@@ -2,8 +2,6 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts
 import "../shared"
-import "../shared/utils/DataConverter.js" as DataConverter
-import "../shared/utils/DataPrettier.js" as DataPrettier
 
 Rectangle {
     id: root
@@ -21,7 +19,7 @@ Rectangle {
             id: label
             Layout.fillWidth: true
             Layout.preferredHeight: root.height * 0.2
-            Layout.leftMargin: window.width * 0.01
+            Layout.leftMargin: 4
             text: "Hourly Forecast"
             color: Theme.textColor
             font.pixelSize: height * 0.7
@@ -34,22 +32,22 @@ Rectangle {
             id: hourlyView
             Layout.fillWidth: true
             Layout.preferredHeight: root.height * 0.7
-            spacing: window.width * 0.004
+            spacing: label.Layout.leftMargin
             orientation: ListView.Horizontal
             clip: true
 
-            model: WeatherData.hourlyForecastModel
+            model: weatherModel.timeline.hourlyForecastModel
 
             delegate: Item {
-                width: window.width * 0.052
+                width: hourlyView.height * 0.5
                 height: hourlyView.height
 
                 HourlyForecastItem {
                     anchors.fill: parent
                     hour: modelData.time
-                    condition: modelData.condition
-                    temperature: DataPrettier.temperature((DataConverter.temperature(modelData.temperature, settings.temperatureUnit)))
+                    temperature: modelData.temperature
                     humidity: modelData.humidity
+                    icon: modelData.icon
                 }
             }
         }

@@ -2,8 +2,6 @@ import QtQuick 2.15
 import QtQuick.Layouts
 import QtQuick.Controls
 import "../shared"
-import "../shared/utils/DataConverter.js" as DataConverter
-import "../shared/utils/DataPrettier.js" as DataPrettier
 
 Rectangle {
     id: root
@@ -18,118 +16,87 @@ Rectangle {
             Layout.fillHeight: true
         }
 
-        Shimmer {
-            id: cityTextShimmer
+        Text {
+            id: cityText
             Layout.fillWidth: true
             Layout.preferredHeight: width * 0.15
             Layout.alignment: Qt.AlignHCenter
-            loading: WeatherData.weatherDataLoading
-
-            Text {
-                id: cityText
-                anchors.fill: parent
-                text: {
-                    if (LocationData.city !== LocationData.country)
-                        return LocationData.city + ", " + LocationData.country;
-                    else
-                        return LocationData.country;
-                }
-
-                font.pixelSize: parent.height * 0.7
-                font.bold: true
-                color: Theme.textColor
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                visible: !cityTextShimmer.loading
+            text: {
+                if (LocationData.city !== LocationData.country)
+                    return LocationData.city + ", " + LocationData.country;
+                else
+                    return LocationData.country;
             }
+            font.pixelSize: height * 0.7
+            font.bold: true
+            color: Theme.textColor
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
         }
 
-        Shimmer {
-            id: dateTimeTextShimmer
+        Text {
+            id: dateTimeText
             Layout.preferredWidth: parent.width * 0.8
             Layout.preferredHeight: width * 0.1
             Layout.alignment: Qt.AlignHCenter
-            loading: WeatherData.weatherDataLoading
-
-            Text {
-                id: dateTimeText
-                anchors.fill: parent
-                text: Clock.currentDate + " • " + Clock.currentTime
-                font.pixelSize: parent.height * 0.7
-                font.weight: Font.DemiBold
-                color: Theme.subTextColor
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                visible: !dateTimeTextShimmer.loading
-            }
+            text: Clock.currentDate + " • " + Clock.currentTime
+            font.pixelSize: height * 0.7
+            font.weight: Font.DemiBold
+            color: Theme.subTextColor
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
         }
 
-        Shimmer {
-            id: weatherIconAndTemperatureShimmer
+        RowLayout {
+            id: weatherIconAndTemperatureLayout
             Layout.preferredWidth: parent.width
             Layout.preferredHeight: parent.height * 0.45
-            loading: WeatherData.weatherDataLoading
+            spacing: 0
 
-            RowLayout {
-                id: weatherIconAndTemperatureLayout
-                anchors.fill: parent
-                spacing: 0
-                visible: !weatherIconAndTemperatureShimmer.loading
+            Item {
+                Layout.fillWidth: true
+            }
 
-                Item {
-                    Layout.fillWidth: true
-                }
+            Image {
+                id: weatherIconImage
+                Layout.preferredWidth: parent.height
+                Layout.preferredHeight: width
+                Layout.alignment: Qt.AlignVCenter
+                source: Directory.weatherIcons + weatherModel.hero.icon + ".png"
+                fillMode: Image.PreserveAspectFit
+            }
 
-                Image {
-                    id: weatherIconImage
-                    Layout.preferredWidth: weatherIconAndTemperatureShimmer.height
-                    Layout.preferredHeight: width
-                    Layout.alignment: Qt.AlignVCenter
-                    source: Directory.weatherIcons + WeatherData.condition + ".png"
-                    fillMode: Image.PreserveAspectFit
-                    visible: !weatherIconAndTemperatureShimmer.loading
-                }
+            Item {
+                Layout.fillWidth: true
+            }
 
-                Item {
-                    Layout.fillWidth: true
-                }
+            Text {
+                id: temperatureText
+                Layout.preferredWidth: weatherIconImage.width
+                Layout.preferredHeight: weatherIconImage.height
+                text: weatherModel.hero.temperature
+                color: Theme.textColor
+                font.pixelSize: height * 0.8
+                font.bold: true
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
 
-                Text {
-                    id: temperatureText
-                    Layout.preferredWidth: weatherIconImage.width
-                    Layout.preferredHeight: weatherIconImage.height
-                    text: DataPrettier.temperature(DataConverter.temperature(WeatherData.temperature, settings.temperatureUnit)) + "°"
-                    color: Theme.textColor
-                    font.pixelSize: height * 0.8
-                    font.bold: true
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    visible: !weatherIconAndTemperatureShimmer.loading
-                }
-
-                Item {
-                    Layout.fillWidth: true
-                }
+            Item {
+                Layout.fillWidth: true
             }
         }
 
-        Shimmer {
-            id: conditionTextShimmer
+        Text {
+            id: conditionText
             Layout.fillWidth: true
             Layout.preferredHeight: temperatureText.height * 0.35
-            loading: WeatherData.weatherDataLoading
-
-            Text {
-                id: conditionText
-                anchors.fill: parent
-                text: WeatherData.condition
-                color: Theme.subTextColor
-                font.pixelSize: height * 0.6
-                font.weight: Font.DemiBold
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                visible: !weatherIconAndTemperatureShimmer.loading
-            }
+            text: weatherModel.hero.condition
+            color: Theme.subTextColor
+            font.pixelSize: height * 0.6
+            font.weight: Font.DemiBold
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
         }
 
         Item {
@@ -143,113 +110,89 @@ Rectangle {
             Layout.alignment: Qt.AlignHCenter
             spacing: 5
 
-            Shimmer {
-                id: maxTemperatureRectangleShimmer
+            Rectangle {
+                id: maxTemperatureRectangle
                 Layout.preferredWidth: root.width * 0.22
                 Layout.preferredHeight: parent.height * 0.9
                 radius: height * 0.5
-                loading: WeatherData.forecastDataLoading
+                color: Theme.badgeColor
 
-                Rectangle {
-                    id: maxTemperatureRectangle
+                RowLayout {
+                    id: maxTemperatureLayout
                     anchors.fill: parent
-                    radius: parent.radius
-                    color: Theme.badgeColor
-                    visible: !maxTemperatureRectangleShimmer.loading
+                    anchors.leftMargin: parent.width * 0.15
+                    anchors.rightMargin: anchors.leftMargin
+                    spacing: 0
 
-                    RowLayout {
-                        id: maxTemperatureLayout
-                        anchors.fill: parent
-                        anchors.leftMargin: parent.width * 0.15
-                        anchors.rightMargin: anchors.leftMargin
-                        spacing: 0
+                    Image {
+                        id: maxTemperatureImage
+                        Layout.preferredWidth: parent.width * 0.35
+                        Layout.preferredHeight: width
+                        source: Directory.icons + "max-temperature.png"
+                        fillMode: Image.PreserveAspectFit
+                    }
 
-                        Image {
-                            id: maxTemperatureImage
-                            Layout.preferredWidth: parent.width * 0.35
-                            Layout.preferredHeight: width
-                            source: Directory.icons + "max-temperature.png"
-                            fillMode: Image.PreserveAspectFit
-                        }
-
-                        Text {
-                            id: maxTemperatureText
-                            text: DataPrettier.temperature(DataConverter.temperature(WeatherData.maxTemperature, settings.temperatureUnit)) + "°"
-                            color: Theme.weatherSummaryItemTextColor
-                            font.pixelSize: parent.height * 0.7
-                            font.bold: true
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-                        }
+                    Text {
+                        id: maxTemperatureText
+                        text: weatherModel.hero.maxTemperature
+                        color: Theme.weatherSummaryItemTextColor
+                        font.pixelSize: parent.height * 0.7
+                        font.bold: true
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
                     }
                 }
             }
 
-            Shimmer {
-                id: minTemperatureRectangleShimmer
+            Rectangle {
+                id: minTemperatureRectangle
                 Layout.preferredWidth: maxTemperatureRectangle.width
                 Layout.preferredHeight: maxTemperatureRectangle.height
                 radius: maxTemperatureRectangle.radius
-                loading: WeatherData.forecastDataLoading
+                color: Theme.primaryColor
 
-                Rectangle {
-                    id: minTemperatureRectangle
+                RowLayout {
+                    id: minTemperatureLayout
                     anchors.fill: parent
-                    radius: parent.radius
-                    color: Theme.primaryColor
-                    visible: !minTemperatureRectangleShimmer.loading
+                    anchors.leftMargin: maxTemperatureLayout.anchors.leftMargin
+                    anchors.rightMargin: anchors.leftMargin
+                    spacing: 0
 
-                    RowLayout {
-                        id: minTemperatureLayout
-                        anchors.fill: parent
-                        anchors.leftMargin: maxTemperatureLayout.anchors.leftMargin
-                        anchors.rightMargin: anchors.leftMargin
-                        spacing: 0
-
-                        Image {
-                            id: minTemperatureImage
-                            Layout.preferredWidth: maxTemperatureImage.width
-                            Layout.preferredHeight: maxTemperatureImage.height
-                            source: Directory.icons + "min-temperature.png"
-                            fillMode: Image.PreserveAspectFit
-                        }
-
-                        Text {
-                            id: minTemperatureText
-                            text: DataPrettier.temperature(DataConverter.temperature(WeatherData.minTemperature, settings.temperatureUnit)) + "°"
-                            color: Theme.weatherSummaryItemTextColor
-                            font.pixelSize: maxTemperatureText.font.pixelSize
-                            font.bold: true
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-                        }
+                    Image {
+                        id: minTemperatureImage
+                        Layout.preferredWidth: maxTemperatureImage.width
+                        Layout.preferredHeight: maxTemperatureImage.height
+                        source: Directory.icons + "min-temperature.png"
+                        fillMode: Image.PreserveAspectFit
                     }
-                }
-            }
-
-            Shimmer {
-                id: feelsLikeTemperatureRectangleShimmer
-                Layout.preferredWidth: maxTemperatureRectangle.width * 2
-                Layout.preferredHeight: maxTemperatureRectangle.height
-                radius: maxTemperatureRectangle.radius
-                loading: WeatherData.forecastDataLoading
-
-                Rectangle {
-                    id: feelsLikeTemperatureRectangle
-                    anchors.fill: parent
-                    radius: parent.radius
-                    color: Theme.accentColor
-                    visible: !feelsLikeTemperatureRectangleShimmer.loading
 
                     Text {
-                        id: feelsLikeTemperatureText
-                        anchors.centerIn: parent
-                        text: "Feels Like " + DataPrettier.temperature(DataConverter.temperature(WeatherData.feelsLike, settings.temperatureUnit)) + "°"
+                        id: minTemperatureText
+                        text: weatherModel.hero.minTemperature
                         color: Theme.weatherSummaryItemTextColor
                         font.pixelSize: maxTemperatureText.font.pixelSize
                         font.bold: true
                         horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
                     }
+                }
+            }
+
+            Rectangle {
+                id: feelsLikeTemperatureRectangle
+                Layout.preferredWidth: maxTemperatureRectangle.width * 2
+                Layout.preferredHeight: maxTemperatureRectangle.height
+                radius: maxTemperatureRectangle.radius
+                color: Theme.accentColor
+
+                Text {
+                    id: feelsLikeTemperatureText
+                    anchors.centerIn: parent
+                    text: "Feels like " + weatherModel.hero.feelsLikeTemperature
+                    color: Theme.weatherSummaryItemTextColor
+                    font.pixelSize: maxTemperatureText.font.pixelSize
+                    font.bold: true
+                    horizontalAlignment: Text.AlignHCenter
                 }
             }
         }

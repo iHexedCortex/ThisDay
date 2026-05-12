@@ -4,7 +4,6 @@ import QtQuick.Layouts
 import "qml/components"
 import "qml/pages"
 import "qml/shared"
-import Weather.Types 1.0
 
 Window {
     id: window
@@ -14,7 +13,7 @@ Window {
     title: "ThisDay Weather"
     color: Theme.backgroundColor
 
-    property bool sidebarExpanded: true
+    property bool sidebarExpanded: window.width >= 800 ? true : false
     property int currentPageIndex: 0
 
     RowLayout {
@@ -23,8 +22,9 @@ Window {
 
         Sidebar {
             id: sidebar
-            Layout.preferredWidth: window.sidebarExpanded ? window.width * 0.17 : window.width * 0.055
+            Layout.preferredWidth: window.sidebarExpanded ? maximumWidth : window.width >= 600 ? 60 : 0
             Layout.fillHeight: true
+            Layout.maximumWidth: 270
             expanded: window.sidebarExpanded
         }
 

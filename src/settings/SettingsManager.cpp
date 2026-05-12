@@ -6,40 +6,57 @@ SettingsManager::SettingsManager(QObject *parent) : QObject(parent) {
 }
 
 void SettingsManager::load() {
-    const int savedTemperatureUnit = settings.value("weather/temperatureUnit", static_cast<int>(DefaultSettings::TEMPERATURE_UNIT)).toInt();
-    this->temperatureUnit = static_cast<WeatherTypes::TemperatureUnit>(savedTemperatureUnit);
+    const int savedTemperatureUnit = settings.value("weather/units/temperature", static_cast<int>(DefaultSettings::TEMPERATURE_UNIT)).toInt();
+    this->temperatureUnit = static_cast<TemperatureUnit>(savedTemperatureUnit);
 
-    const int savedRefreshRate = settings.value("weather/refreshRate", static_cast<int>(DefaultSettings::REFRESH_RATE)).toInt();
-    this->refreshRate = static_cast<WeatherTypes::RefreshRate>(savedRefreshRate);
+    const int savedWindSpeedUnit = settings.value("weather/units/windSpeed", static_cast<int>(DefaultSettings::WIND_SPEED_UNIT)).toInt();
+    this->windSpeedUnit = static_cast<WindSpeedUnit>(savedWindSpeedUnit);
+
+    const int savedPrecipitationUnit = settings.value("weather/units/precipitation", static_cast<int>(DefaultSettings::PRECIPITATION_UNIT)).toInt();
+    this->precipitationUnit = static_cast<PrecipitationUnit>(savedPrecipitationUnit);
 }
 
-WeatherTypes::TemperatureUnit SettingsManager::getTemperatureUnit() const {
+TemperatureUnit SettingsManager::getTemperatureUnit() const {
     return this->temperatureUnit;
 }
 
-WeatherTypes::RefreshRate SettingsManager::getRefreshRate() const {
-    return this->refreshRate;
+WindSpeedUnit SettingsManager::getWindSpeedUnit() const {
+    return this->windSpeedUnit;
 }
 
-void SettingsManager::setTemperatureUnit(WeatherTypes::TemperatureUnit newUnit) {
+PrecipitationUnit SettingsManager::getPrecipitationUnit() const {
+    return this->precipitationUnit;
+}
+
+void SettingsManager::setTemperatureUnit(TemperatureUnit newUnit) {
     if (this->temperatureUnit == newUnit) return;
 
     this->temperatureUnit = newUnit;
-    this->settings.setValue("weather/temperatureUnit", static_cast<int>(newUnit));
+    this->settings.setValue("weather/units/temperature", static_cast<int>(newUnit));
 
-    emit this->temperatureUnitChanged();
+    emit this->temperatureUnitChanged(newUnit);
 }
 
-void SettingsManager::setRefreshRate(WeatherTypes::RefreshRate newRate) {
-    if (this->refreshRate == newRate) return;
+void SettingsManager::setWindSpeedUnit(WindSpeedUnit newUnit) {
+    if (this->windSpeedUnit == newUnit) return;
 
-    this->refreshRate = newRate;
-    this->settings.setValue("weather/refreshRate", static_cast<int>(newRate));
+    this->windSpeedUnit = newUnit;
+    this->settings.setValue("weather/units/windSpeed", static_cast<int>(newUnit));
 
-    emit this->refreshRateChanged();
+    emit this->windSpeedUnitChanged(newUnit);
+}
+
+void SettingsManager::setPrecipitationUnit(PrecipitationUnit newUnit) {
+    if (this->precipitationUnit == newUnit) return;
+
+    this->precipitationUnit = newUnit;
+    this->settings.setValue("weather/units/precipitation", static_cast<int>(newUnit));
+
+    emit this->precipitationUnitChanged(newUnit);
 }
 
 void SettingsManager::resetToDefaults() {
     this->setTemperatureUnit(DefaultSettings::TEMPERATURE_UNIT);
-    this->setRefreshRate(DefaultSettings::REFRESH_RATE);
+    this->setWindSpeedUnit(DefaultSettings::WIND_SPEED_UNIT);
+    this->setPrecipitationUnit(DefaultSettings::PRECIPITATION_UNIT);
 }

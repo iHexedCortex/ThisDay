@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 project(ThisDay VERSION 0.1 LANGUAGES CXX)
 
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Quick)
@@ -47,6 +48,7 @@ qt_add_qml_module(appThisDay
         qml/shared/Directory.qml
         qml/shared/WeatherData.qml
         qml/shared/Clock.qml
+        qml/shared/LocationData.qml
 
     RESOURCES
         resources/icons/app/icon.ico
@@ -78,21 +80,26 @@ qt_add_qml_module(appThisDay
         resources/icons/sidebar/sunrise.png
         resources/icons/sidebar/sunset.png
 
-        "resources/icons/weather/Clear sky.png"
-        resources/icons/weather/Clouds.png
-        "resources/icons/weather/Partly cloudy.png"
-        resources/icons/weather/Drizzle.png
-        resources/icons/weather/Thunder.png
-        resources/icons/weather/Dust.png
-        resources/icons/weather/Foggy.png
-        resources/icons/weather/Hail.png
-        resources/icons/weather/Haze.png
-        resources/icons/weather/Mist.png
-        resources/icons/weather/Snowy.png
-        resources/icons/weather/Thunderstorm.png
-        resources/icons/weather/Tornado.png
-        resources/icons/weather/Wind.png
-        resources/icons/weather/Rainy.png
+        resources/icons/weather/clear_sky_day.png
+        resources/icons/weather/clear_sky_night.png
+        resources/icons/weather/cloudy_day.png
+        resources/icons/weather/cloudy_night.png
+        resources/icons/weather/drizzle_day.png
+        resources/icons/weather/drizzle_night.png
+        resources/icons/weather/fog_day.png
+        resources/icons/weather/fog_night.png
+        resources/icons/weather/haze_day.png
+        resources/icons/weather/haze_night.png
+        resources/icons/weather/partly_cloudy_day.png
+        resources/icons/weather/partly_cloudy_night.png
+        resources/icons/weather/rain_day.png
+        resources/icons/weather/rain_night.png
+        resources/icons/weather/snow_day.png
+        resources/icons/weather/snow_night.png
+        resources/icons/weather/thunderstorm_day.png
+        resources/icons/weather/thunderstorm_night.png
+        resources/icons/weather/thunder_day.png
+        resources/icons/weather/thunder_night.png
 
         resources/icons/weather/details/cloudiness.png
         resources/icons/weather/details/dew.png
@@ -112,14 +119,25 @@ qt_add_qml_module(appThisDay
     SOURCES 
         src/network/WeatherProvider.h src/network/WeatherProvider.cpp
         src/network/LocationProvider.h src/network/LocationProvider.cpp
-    
-
-        SOURCES src/settings/SettingsManager.h src/settings/SettingsManager.cpp
-        SOURCES src/settings/DefaultSettings.h
-        SOURCES src/common/types/WeatherTypes.h
-        QML_FILES qml/shared/utils/DataConverter.js
-        QML_FILES qml/shared/utils/DataPrettier.js
-        QML_FILES qml/shared/LocationData.qml
+        src/settings/SettingsManager.h src/settings/SettingsManager.cpp
+        src/settings/DefaultSettings.h
+        src/common/types/WeatherUnits.h
+        src/common/types/WeatherDataTypes.h
+        src/utils/WeatherParser.h src/utils/WeatherParser.cpp
+        src/core/WeatherModel.h src/core/WeatherModel.cpp
+        src/common/types/WeatherModelTypes.h
+        src/common/mappers/WeatherMapper.h
+        src/common/mappers/WeatherMapper.cpp
+        src/common/constants/WeatherStandardReferenceUnits.h
+        src/utils/WeatherCalculator.h src/utils/WeatherCalculator.cpp
+        src/common/types/SettingsTypes.h
+        src/common/types/WeatherPresentationSettings.h
+        src/common/mappers/WeatherSemanticMapper.h src/common/mappers/WeatherSemanticMapper.cpp
+        src/utils/WeatherTimeUtils.h src/utils/WeatherTimeUtils.cpp
+        src/common/mappers/WeatherEnumMapper.h src/common/mappers/WeatherEnumMapper.cpp
+        src/common/formatters/WeatherFormatter.h src/common/formatters/WeatherFormatter.cpp
+        src/common/formatters/WeatherDomainFormatter.h src/common/formatters/WeatherDomainFormatter.cpp
+        SOURCES src/common/builders/WeatherSummaryBuilder.h src/common/builders/WeatherSummaryBuilder.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

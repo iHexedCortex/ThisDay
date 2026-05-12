@@ -8,8 +8,8 @@ Rectangle {
     Text {
         id: overallSummaryInformationText
         anchors.fill: parent
-        text: WeatherData.overallSummary
-        font.pixelSize: window.width * 0.015
+        text: weatherModel.summary
+        font.pixelSize: parent.width * 0.02
         font.weight: Font.DemiBold
         color: Theme.subTextColor
         horizontalAlignment: Text.AlignHCenter

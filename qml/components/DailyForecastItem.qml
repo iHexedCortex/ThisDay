@@ -16,8 +16,9 @@ Rectangle {
 
     required property string week
     required property string condition
-    required property real maxTemperature
-    required property real minTemperature
+    required property string maxTemperature
+    required property string minTemperature
+    required property string icon
 
     ColumnLayout {
         id: mainLayout
@@ -39,7 +40,7 @@ Rectangle {
 
         Image {
             id: iconImage
-            source: Directory.weatherIcons + root.condition + ".png"
+            source: Directory.weatherIcons + root.icon + ".png"
             Layout.preferredWidth: root.height * 0.4
             Layout.preferredHeight: Layout.preferredWidth
             Layout.alignment: Qt.AlignHCenter
@@ -58,7 +59,7 @@ Rectangle {
             Text {
                 id: maxTemperatureText
                 Layout.alignment: Qt.AlignHCenter
-                text: root.maxTemperature + "°"
+                text: root.maxTemperature
                 color: "white"
                 font.pixelSize: weekText.font.pixelSize * 1.8
                 font.bold: true
@@ -69,7 +70,7 @@ Rectangle {
             Text {
                 id: minTemperatureText
                 Layout.alignment: Qt.AlignHCenter
-                text: root.minTemperature + "°"
+                text: root.minTemperature
                 color: "lightgray"
                 font.pixelSize: weekText.font.pixelSize * 1.4
                 font.bold: true

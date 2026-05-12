@@ -1,0 +1,29 @@
+module ThisDay
+typeinfo appThisDay.qmltypes
+prefer :/qt/qml/ThisDay/
+
+Main 1.0 Main.qml
+Searchbar 1.0 qml/components/Searchbar.qml
+Sidebar 1.0 qml/components/Sidebar.qml
+SidebarButton 1.0 qml/components/SidebarButton.qml
+SidebarStatItem 1.0 qml/components/SidebarStatItem.qml
+WeatherCard 1.0 qml/components/WeatherCard.qml
+Toolbar 1.0 qml/components/Toolbar.qml
+HourlyForecastItem 1.0 qml/components/HourlyForecastItem.qml
+HourlyForecastView 1.0 qml/components/HourlyForecastView.qml
+DailyForecastItem 1.0 qml/components/DailyForecastItem.qml
+WeatherDetailsItem 1.0 qml/components/WeatherDetailsItem.qml
+WeatherDetailsCard 1.0 qml/components/WeatherDetailsCard.qml
+ThemeSwitch 1.0 qml/components/ThemeSwitch.qml
+DailyForecastView 1.0 qml/components/DailyForecastView.qml
+Shimmer 1.0 qml/components/Shimmer.qml
+SidebarToggle 1.0 qml/components/SidebarToggle.qml
+OverallWeatherSummaryCard 1.0 qml/components/OverallWeatherSummaryCard.qml
+TodayPage 1.0 qml/pages/TodayPage.qml
+Theme 1.0 qml/shared/Theme.qml
+Directory 1.0 qml/shared/Directory.qml
+WeatherData 1.0 qml/shared/WeatherData.qml
+Clock 1.0 qml/shared/Clock.qml
+LocationData 1.0 qml/shared/LocationData.qml
+
+depends QtQuick

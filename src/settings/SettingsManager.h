@@ -5,33 +5,36 @@
 #include <QSettings>
 
 #include "DefaultSettings.h"
+#include "../common/types/WeatherUnits.h"
 
 class SettingsManager final : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(WeatherTypes::TemperatureUnit temperatureUnit READ getTemperatureUnit WRITE setTemperatureUnit NOTIFY temperatureUnitChanged)
-    Q_PROPERTY(WeatherTypes::RefreshRate refreshRate READ getRefreshRate WRITE setRefreshRate NOTIFY refreshRateChanged)
-
 public:
     explicit SettingsManager(QObject *parent = nullptr);
 
-    WeatherTypes::TemperatureUnit getTemperatureUnit() const;
-    WeatherTypes::RefreshRate getRefreshRate() const;
+    TemperatureUnit getTemperatureUnit() const;
+    PrecipitationUnit getPrecipitationUnit() const;
+    WindSpeedUnit getWindSpeedUnit() const;
 
-    void setTemperatureUnit(WeatherTypes::TemperatureUnit newUnit);
-    void setRefreshRate(WeatherTypes::RefreshRate newRate);
+    void setTemperatureUnit(TemperatureUnit unit);
+    void setWindSpeedUnit(WindSpeedUnit unit);
+    void setPrecipitationUnit(PrecipitationUnit unit);
 
     Q_INVOKABLE void resetToDefaults();
 
 signals:
-    void temperatureUnitChanged();
-    void refreshRateChanged();
+    void temperatureUnitChanged(TemperatureUnit unit);
+    void windSpeedUnitChanged(WindSpeedUnit unit);
+    void precipitationUnitChanged(PrecipitationUnit unit);
 
 private:
     QSettings settings;
-    WeatherTypes::TemperatureUnit temperatureUnit;
-    WeatherTypes::RefreshRate refreshRate;
+
+    TemperatureUnit temperatureUnit;
+    WindSpeedUnit windSpeedUnit;
+    PrecipitationUnit precipitationUnit;
 
     void load();
 };

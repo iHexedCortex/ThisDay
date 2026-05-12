@@ -9,10 +9,8 @@ Rectangle {
 
     required property string label
     required property var value
-    property string unit: ""
     required property string icon
     property string extra
-    property string level
 
     RowLayout {
         id: mainLayout
@@ -52,63 +50,38 @@ Rectangle {
                 }
 
                 Rectangle {
-                    id: levelRectangle
-                    Layout.preferredWidth: root.width * 0.12
-                    Layout.preferredHeight: Layout.preferredWidth
+                    id: extraRectangle
+                    Layout.preferredWidth: extraText.implicitWidth + root.width * 0.07
+                    Layout.preferredHeight: extraText.implicitHeight
                     color: Theme.accentColor
                     radius: Layout.preferredHeight * 0.5
-                    visible: !!level
-
-                    Text {
-                        id: levelText
-                        anchors.fill: parent
-                        text: root.level
-                        color: Theme.textColor
-                        font.pixelSize: parent.height * 0.65
-                        font.weight: Font.Bold
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                }
-            }
-
-            RowLayout {
-                id: valueLayout
-                Layout.fillWidth: true
-
-                Text {
-                    id: valueText
-                    text: root.value + root.unit
-                    color: Theme.textColor
-                    font.pixelSize: labelText.font.pixelSize * 1.2
-                    font.bold: true
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-                }
-
-                Item {
-                    Layout.fillWidth: true
-                }
-
-                Rectangle {
-                    id: extraRectangle
-                    Layout.preferredWidth: root.width * 0.2
-                    Layout.preferredHeight: Layout.preferredWidth * 0.6
-                    color: Theme.primaryColor
-                    radius: Layout.preferredHeight * 0.4
-                    visible: !!root.extra
+                    visible: !!extra
 
                     Text {
                         id: extraText
                         anchors.fill: parent
                         text: root.extra
                         color: Theme.textColor
-                        font.pixelSize: parent.height * 0.7
+                        font.pixelSize: root.height * 0.25
                         font.bold: true
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                     }
                 }
+
+                Item {
+                    Layout.fillWidth: true
+                }
+            }
+
+            Text {
+                id: valueText
+                text: root.value
+                color: Theme.textColor
+                font.pixelSize: labelText.font.pixelSize * 1.2
+                font.bold: true
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
             }
         }
     }
